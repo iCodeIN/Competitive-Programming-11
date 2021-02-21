@@ -4,7 +4,7 @@
 #include <vector>
 // #include <bits/stdc++.h>
 // #include <cmath>
-// #include <algorithm>
+#include <algorithm>
 // #include <unordered_map>
 // #include <map>
 // #include <set>
@@ -18,7 +18,7 @@ using namespace std;
     int T;    \
     cin >> T; \
     while (T--)
-// #define int long long int
+#define int long long int
 #define mod 1000000007ll
 #define endl "\n"
 //------------------------------------------------------------------------------
@@ -86,90 +86,24 @@ public:
     }
 
 } Math;
-
-#define maxn 800001
-#define max_elem 200001
-int segmentTree[maxn];
-
-void update(int node, int a, int b, int x, int diff)
-{
-
-    if (a == b && a == x)
-    {
-
-        segmentTree[node] += diff;
-        return;
-    }
-
-    if (x >= a && x <= b)
-    {
-        update(node * 2, a, (a + b) / 2, x, diff);
-        update(node * 2 + 1, (a + b) / 2 + 1, b, x, diff);
-
-        segmentTree[node] = segmentTree[node * 2] +
-                            segmentTree[node * 2 + 1];
-    }
-}
-
-int findKth(int node, int a, int b, int k)
-{
-
-    if (a != b)
-    {
-
-        if (segmentTree[node * 2] >= k)
-            return findKth(node * 2, a, (a + b) / 2, k);
-
-        return findKth(node * 2 + 1, (a + b) / 2 + 1,
-                       b, k - segmentTree[node * 2]);
-    }
-
-    return (segmentTree[node]) ? a : -1;
-}
-
-void insert(int x)
-{
-    update(1, 0, max_elem, x, 1);
-}
-
-void delet(int x)
-{
-    update(1, 0, max_elem, x, -1);
-}
-
-int k;
-int median()
-{
-    int k_ = (segmentTree[1] + 1) / 2;
-    return findKth(1, 0, max_elem, k_);
-}
 //------------------------------------------------------------------------------
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
-    v(int) A(n);
-    for (int i = 0; i < n; i++)
-        cin >> A[i];
-
-    for (int i = 0; i < k; i++)
-        insert(A[i]);
-    int ans = median();
-    for (int i = 1; k + i - 1 < n; i++)
-    {
-        delet(A[i - 1]);
-        insert(A[k + i - 1]);
-        ans = max(ans, median());
-    }
-    cout << ans << endl;
+    string s;
+    cin >> s;
+    sort(s.begin(), s.end());
+    if (s == "CMP")
+        cout << "YES\n";
+    else
+        cout << "NO\n";
 }
 //------------------------------------------------------------------------------
 int32_t main()
 {
     FastIO;
 
-    // w(T)
-    solve();
+    w(T)
+        solve();
 
     return 0;
 }
