@@ -4,8 +4,8 @@
 
 | ✅   | Online Judge       | Highest Rating | Problems Solved | Profile Link                                                           |
 | --- | ------------------ | -------------- | --------------- | ---------------------------------------------------------------------- |
-| ✅   | <strong>CodeChef   | ⭐⭐⭐⭐           | 119             | [<strong>Click Here](https://www.codechef.com/users/pasricha_dhruv)    |
-| ✅   | <strong>CodeForces | ⭐⭐             | 122             | [<strong>Click Here](https://codeforces.com/profile/pasricha_dhruv)    |
+| ✅   | <strong>CodeChef   | ⭐⭐⭐⭐           | 121             | [<strong>Click Here](https://www.codechef.com/users/pasricha_dhruv)    |
+| ✅   | <strong>CodeForces | ⭐⭐             | 143             | [<strong>Click Here](https://codeforces.com/profile/pasricha_dhruv)    |
 | ✅   | <strong>HackerRank | ⭐⭐⭐⭐⭐⭐         | 139             | [<strong>Click Here](https://www.hackerrank.com/dhruv_pasricha?hr_r=1) |
 | ✅   | <strong>LeetCode   | ⭐⭐             | 109             | [<strong>Click Here](https://leetcode.com/pasricha_dhruv/)             |
 
