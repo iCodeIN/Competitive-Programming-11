@@ -23,160 +23,58 @@ using namespace std;
 #define mod 1000000007ll
 #define endl "\n"
 //------------------------------------------------------------------------------
-// Any fucntion can be called using Math.function_name();
 //------------------------------------------------------------------------------
-class Math
+int dp[52][2][18][18][18];
+
+int g(string &s, int pos = 0, bool tight = 1, int c3 = 0, int c6 = 0, int c9 = 0)
 {
-public:
-    //Returns gcd of two numbers
-    int gcd(int a, int b)
+    int len = s.length();
+    if (3 * c3 > len or 3 * c6 > len or 3 * c9 > len)
+        return 0;
+
+    if (pos == len)
+        return c3 >= 1 and c3 == c6 and c6 == c9;
+
+    if (dp[pos][tight][c3][c6][c9] != -1)
+        return dp[pos][tight][c3][c6][c9];
+
+    int e = (tight) ? s[pos] - '0' : 9;
+    int ans = 0;
+
+    for (int i = 0; i < e; i++, ans %= mod)
     {
-        return (a % b == 0) ? b : gcd(b, a % b);
+        if (i == 3)
+            ans += g(s, pos + 1, false, c3 + 1, c6, c9);
+        else if (i == 6)
+            ans += g(s, pos + 1, false, c3, c6 + 1, c9);
+        else
+            ans += g(s, pos + 1, false, c3, c6, c9);
     }
 
-    //Returns lcm of two numbers
-    int lcm(int a, int b)
-    {
-        return a * (b / gcd(a, b));
-    }
+    if (e == 3)
+        ans += g(s, pos + 1, tight, c3 + 1, c6, c9);
+    else if (e == 6)
+        ans += g(s, pos + 1, tight, c3, c6 + 1, c9);
+    else if (e == 9)
+        ans += g(s, pos + 1, tight, c3, c6, c9 + 1);
+    else
+        ans += g(s, pos + 1, tight, c3, c6, c9);
 
-    // Returns flag array isPrime
-    // isPrime[i] = true (if i is Prime)
-    // isPrime[i] = false (if i is not Prime)
-    vector<bool> *seiveOfEratosthenes(const int N)
-    {
-        vector<bool> *isPrime = new vector<bool>(N + 1, true);
-        (*isPrime)[0] = (*isPrime)[1] = false;
-        for (int i = 2; i * i <= N; ++i)
-            if ((*isPrime)[i])
-                for (int j = i * i; j <= N; j += i)
-                    (*isPrime)[j] = false;
+    ans %= mod;
 
-        return isPrime;
-    }
-
-    //Returns (x ^ n)
-    int pow(const int &x, int n)
-    {
-        if (n == 0)
-            return 1;
-        int h = pow(x, n / 2);
-        return (n & 1) ? h * h * x : h * h;
-    }
-
-    //Returns (x ^ n) % M
-    int pow(const int &x, int n, const int &M)
-    {
-        if (n == 0)
-            return 1;
-        int h = pow(x, n / 2) % M;
-        return (n & 1) ? (h * h * x) % M : (h * h) % M;
-    }
-
-    //Returns all Primes <= N
-    vector<int> *primesUptoN(const int N)
-    {
-        vector<bool> *isPrime = seiveOfEratosthenes(N);
-        vector<int> *Primes = new vector<int>;
-        if (2 <= N)
-            (*Primes).push_back(2);
-        for (int i = 3; i <= N; i += 2)
-            if ((*isPrime)[i])
-                (*Primes).push_back(i);
-        return Primes;
-    }
-
-} Math;
-//------------------------------------------------------------------------------
-int dp[55][2][18][18][18];
-
-int g(string &s)
-{
-
-    // if (c3 > 17 or c6 > 17 or c9 > 17)
-    //     return 0;
-
-    // if (pos == s.length())
-    //     return c3 >= 1 and c3 == c6 and c6 == c9;
-
-    // if (dp[pos][tight][c3][c6][c9] != -1)
-    //     return dp[pos][tight][c3][c6][c9];
-
-    // int e = (tight) ? s[pos] - '0' : 9;
-    // int ans = 0;
-
-    // for (int i = 0; i < e; i++, ans %= mod)
-    // {
-    //     if (i == 3)
-    //         ans += g(s, pos + 1, false, c3 + 1, c6, c9);
-    //     else if (i == 6)
-    //         ans += g(s, pos + 1, false, c3, c6 + 1, c9);
-    //     else
-    //         ans += g(s, pos + 1, false, c3, c6, c9);
-    // }
-
-    // if (e == 3)
-    //     ans += g(s, pos + 1, tight, c3 + 1, c6, c9);
-    // else if (e == 6)
-    //     ans += g(s, pos + 1, tight, c3, c6 + 1, c9);
-    // else if (e == 9)
-    //     ans += g(s, pos + 1, tight, c3, c6, c9 + 1);
-    // else
-    //     ans += g(s, pos + 1, tight, c3, c6, c9);
-
-    // return dp[pos][tight][c3][c6][c9] = ans;
-
-    for (int tight = 0; tight <= 1; tight++)
-        for (int c3 = 1; c3 <= 17; c3++)
-            for (int c6 = 1; c6 <= 17; c6++)
-                for (int c9 = 1; c9 <= 17; c9++)
-                    if (c3 == c6 and c6 == c9)
-                        dp[s.length()][tight][c3][c6][c9] = 1;
-
-    for (int pos = s.length() - 1; pos >= 0; pos--)
-    {
-
-        for (int c3 = 17; c3 >= 0; c3--)
-        {
-            for (int c6 = 17; c6 >= 0; c6--)
-            {
-                for (int c9 = 17; c9 >= 0; c9--)
-                {
-                    for (int tight = 0; tight <= 1; tight++)
-                    {
-                        int e = (tight) ? s[pos] - '0' : 9;
-                        int ans = 0;
-                        for (int i = 0; i < e; i++, ans %= mod)
-                        {
-                            if (i == 3)
-                                ans += dp[pos + 1][0][c3 + 1][c6][c9];
-                            else if (i == 6)
-                                ans += dp[pos + 1][0][c3][c6 + 1][c9];
-                            else
-                                ans += dp[pos + 1][0][c3][c6][c9];
-                        }
-
-                        if (e == 3)
-                            ans += dp[pos + 1][tight][c3 + 1][c6][c9];
-                        else if (e == 6)
-                            ans += dp[pos + 1][tight][c3][c6 + 1][c9];
-                        else if (e == 9)
-                            ans += dp[pos + 1][tight][c3][c6][c9 + 1];
-                        else
-                            ans += dp[pos + 1][tight][c3][c6][c9];
-
-                        dp[pos][tight][c3][c6][c9] = ans % mod;
-                    }
-                }
-            }
-        }
-    }
-    return dp[0][1][0][0][0];
+    return dp[pos][tight][c3][c6][c9] = ans;
 }
 
 int f(string &n)
 {
-    memset(dp, 0, sizeof(dp));
+    int k = n.length();
+
+    for (int i = 0; i <= k; i++)
+        for (int j = 0; j < 2; j++)
+            for (int c1 = 0; 3 * c1 <= k; c1++)
+                for (int c2 = 0; 3 * c2 <= k; c2++)
+                    for (int c3 = 0; 3 * c3 <= k; c3++)
+                        dp[i][j][c1][c2][c3] = -1;
     int ans = g(n);
     return ans;
 }
