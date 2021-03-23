@@ -1,10 +1,9 @@
 
-
 //------------------------------------------------------------------------------
 #include <iostream>
 #include <vector>
 // #include <bits/stdc++.h>
-// #include <cmath>
+#include <cmath>
 // #include <algorithm>
 // #include <unordered_map>
 // #include <map>
@@ -90,19 +89,28 @@ public:
 //------------------------------------------------------------------------------
 void solve()
 {
-     
+    int i = 0;
+    int in = 0;
+    do
+    {
+        cout << A[i++] << endl;
+        fflush(stdout);
+        cin >> in;
+    } while (in == 0);
 }
-
 //------------------------------------------------------------------------------
 int32_t main()
 {
-    FastIO;
-    int test = 1;
-    w(T)
+    // FastIO;
+    for (int i = 1; i <= 1e6; i++)
     {
-        cout << "Case #" << test++ << ": ";
-        solve();
+        long double sq = sqrt(i);
+        if (floor(sq) == ceil(sq))
+            A.push_back(i);
     }
+    w(T)
+        solve();
+
     return 0;
 }
 //------------------------------------------------------------------------------

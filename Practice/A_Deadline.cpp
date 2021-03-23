@@ -1,10 +1,9 @@
 
-
 //------------------------------------------------------------------------------
 #include <iostream>
 #include <vector>
 // #include <bits/stdc++.h>
-// #include <cmath>
+#include <cmath>
 // #include <algorithm>
 // #include <unordered_map>
 // #include <map>
@@ -88,21 +87,36 @@ public:
 
 } Math;
 //------------------------------------------------------------------------------
-void solve()
+bool f(int x, int n, int d)
 {
-     
+    return ceil((d * 1.0) / (x + 1)) <= n - x;
 }
 
+void solve()
+{
+    int n, d;
+    cin >> n >> d;
+
+    int x1 = sqrt(d) - 1;
+
+    int x0 = max(0ll, x1 - 1);
+    int x2 = x1 + 1;
+
+    if (f(x0, n, d) or f(x1, n, d) or f(x2, n, d))
+        cout << "YES";
+    else
+        cout << "NO";
+
+    cout << endl;
+}
 //------------------------------------------------------------------------------
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 //------------------------------------------------------------------------------

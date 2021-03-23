@@ -1,5 +1,4 @@
 
-
 //------------------------------------------------------------------------------
 #include <iostream>
 #include <vector>
@@ -90,9 +89,54 @@ public:
 //------------------------------------------------------------------------------
 void solve()
 {
-     
-}
+    int n;
+    cin >> n;
+    int A[n][n];
+    int tr = 0;
+    int r = 0;
+    int c = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+        {
+            cin >> A[i][j];
+            if (i == j)
+                tr += A[i][j];
+        }
 
+    for (int i = 0; i < n; i++)
+    {
+        int F[n + 1] = {0};
+        bool ok = true;
+        for (int j = 0; j < n; j++)
+        {
+            F[A[i][j]]++;
+            if (F[A[i][j]] > 1)
+            {
+                ok = false;
+                break;
+            }
+        }
+        if (ok)
+            r++;
+    }
+    for (int j = 0; j < n; j++)
+    {
+        int F[n + 1] = {0};
+        bool ok = true;
+        for (int i = 0; i < n; i++)
+        {
+            F[A[i][j]]++;
+            if (F[A[i][j]] > 1)
+            {
+                ok = false;
+                break;
+            }
+        }
+        if (ok)
+            c++;
+    }
+    cout << tr << " " << n - r << " " << n - c << endl;
+}
 //------------------------------------------------------------------------------
 int32_t main()
 {
