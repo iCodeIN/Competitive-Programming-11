@@ -21,7 +21,7 @@ struct SegTree
         int n = A.size();
         while (size < n)
             size *= 2;
-        t.assign(2 * size, INT32_MAX);
+        t.assign(2 * size, init);
         build(A, 0, 0, size);
     }
 
