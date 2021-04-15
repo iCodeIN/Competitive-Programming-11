@@ -87,11 +87,9 @@ public:
 
 } Math;
 //------------------------------------------------------------------------------
-
 struct Node
 {
-    //
-    int val = INT32_MAX;
+    int v = INT32_MAX, c = 0;
 };
 
 class SegmentTree
@@ -99,13 +97,16 @@ class SegmentTree
 private:
     v(Node) tree;
     int size;
-
+    //
     Node neutralValue;
 
     Node merge(Node &a, Node &b)
     {
         Node ans;
-        ans.val = min(a.val, b.val);
+        if (a.m == b.m)
+        {
+            ans.m = a.m;
+        }
         return ans;
     }
 
@@ -117,7 +118,7 @@ private:
             if (lx < (int)A.size())
             {
                 Node temp;
-                temp.val = A[lx];
+                //
                 tree[x] = temp;
             }
             return;
@@ -136,7 +137,6 @@ private:
         {
             Node temp;
             //
-            temp.val = val;
             tree[x] = temp;
             return;
         }
@@ -190,39 +190,15 @@ public:
 //------------------------------------------------------------------------------
 void solve()
 {
-    int n, q;
-    cin >> n >> q;
-    v(int) A(n);
-    for (int i = 0; i < n; i++)
-        cin >> A[i];
-    SegmentTree st(A);
-    while (q--)
-    {
-        int op;
-        cin >> op;
-
-        if (op == 1)
-        {
-            int i, v;
-            cin >> i >> v;
-            st.update(i, v);
-        }
-        else
-        {
-            int l, r;
-            cin >> l >> r;
-            Node ans = st.query(l, r);
-            cout << ans.val << endl;
-        }
-    }
 }
 //------------------------------------------------------------------------------
 int32_t main()
 {
     FastIO;
 
-    // w(T)
+    w(T)
         solve();
 
     return 0;
 }
+//------------------------------------------------------------------------------

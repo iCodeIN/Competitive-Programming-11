@@ -18,171 +18,116 @@ using namespace std;
     int T;    \
     cin >> T; \
     while (T--)
-#define int long long int
+// #define int long long int
 #define mod 1000000007ll
 #define endl "\n"
-//------------------------------------------------------------------------------
-// Any fucntion can be called using Math.function_name();
-//------------------------------------------------------------------------------
-class Math
+
+struct Node
 {
-public:
-    //Returns gcd of two numbers
-    int gcd(int a, int b)
-    {
-        return (a % b == 0) ? b : gcd(b, a % b);
-    }
+    int val = 0;
+};
 
-    //Returns lcm of two numbers
-    int lcm(int a, int b)
-    {
-        return a * (b / gcd(a, b));
-    }
-
-    // Returns flag array isPrime
-    // isPrime[i] = true (if i is Prime)
-    // isPrime[i] = false (if i is not Prime)
-    vector<bool> *seiveOfEratosthenes(const int N)
-    {
-        vector<bool> *isPrime = new vector<bool>(N + 1, true);
-        (*isPrime)[0] = (*isPrime)[1] = false;
-        for (int i = 2; i * i <= N; ++i)
-            if ((*isPrime)[i])
-                for (int j = i * i; j <= N; j += i)
-                    (*isPrime)[j] = false;
-
-        return isPrime;
-    }
-
-    //Returns (x ^ n)
-    int pow(const int &x, int n)
-    {
-        if (n == 0)
-            return 1;
-        int h = pow(x, n / 2);
-        return (n & 1) ? h * h * x : h * h;
-    }
-
-    //Returns (x ^ n) % M
-    int pow(const int &x, int n, const int &M)
-    {
-        if (n == 0)
-            return 1;
-        int h = pow(x, n / 2) % M;
-        return (n & 1) ? (h * h * x) % M : (h * h) % M;
-    }
-
-    //Returns all Primes <= N
-    vector<int> *primesUptoN(const int N)
-    {
-        vector<bool> *isPrime = seiveOfEratosthenes(N);
-        vector<int> *Primes = new vector<int>;
-        if (2 <= N)
-            (*Primes).push_back(2);
-        for (int i = 3; i <= N; i += 2)
-            if ((*isPrime)[i])
-                (*Primes).push_back(i);
-        return Primes;
-    }
-
-} Math;
-//------------------------------------------------------------------------------
-
-struct SegTree
+struct SegmentTree
 {
-    v(int) t;
+private:
+    v(Node) tree;
     int size;
+    Node neutralValue;
+    Node base;
 
-    int init = 0;
-
-    int f(int &a, int &b)
+    Node merge(Node &a, Node &b)
     {
-        return a + b;
+        Node ans;
+        ans.val = a.val + b.val;
+        return ans;
     }
 
-    SegTree(v(int) & A)
+    void build(v(int) & A, int x, int lx, int rx)
+    {
+
+        if (rx - lx == 1)
+        {
+            if (lx < A.size())
+            {
+                base.val = A[lx];
+                tree[x] = base;
+            }
+            return;
+        }
+
+        int mx = (lx + rx) >> 1;
+        build(A, (2 * x) + 1, lx, mx);
+        build(A, (2 * x) + 2, mx, rx);
+
+        tree[x] = merge(tree[(2 * x) + 1], tree[(2 * x) + 2]);
+    }
+
+    void update(int &idx, int &val, int x, int lx, int rx)
+    {
+
+        if (rx - lx == 1)
+        {
+            base.val = val;
+            tree[x] = base;
+            return;
+        }
+
+        int mx = (lx + rx) >> 1;
+
+        if (idx < mx)
+            update(idx, val, (2 * x) + 1, lx, mx);
+        else
+            update(idx, val, (2 * x) + 2, mx, rx);
+
+        tree[x] = merge(tree[(2 * x) + 1], tree[(2 * x) + 2]);
+    }
+
+    Node query(int &l, int &r, int x, int lx, int rx)
+    {
+        if (lx >= r or l >= rx)
+            return neutralValue;
+
+        if (rx - lx == 1)
+            return tree[x];
+
+        int mx = (lx + rx) >> 1;
+        Node ans1 = query(l, r, 2 * x + 1, lx, mx);
+        Node ans2 = query(l, r, 2 * x + 2, mx, rx);
+        Node ans = merge(ans1, ans2);
+        return ans;
+    }
+
+public:
+    SegmentTree(v(int) & A)
     {
         size = 1;
         int n = A.size();
         while (size < n)
             size *= 2;
-        t.assign(2 * size, INT32_MAX);
+        tree.assign((2 * size) + 1, neutralValue);
         build(A, 0, 0, size);
     }
 
-    void build(v(int) & A, int x, int lx, int rx)
+    void update(int &idx, int &val)
     {
-        if (rx - lx == 1)
-        {
-            if (lx < A.size())
-                t[x] = A[lx];
-            return;
-        }
-
-        int m = (lx + rx) >> 1;
-
-        build(A, 2 * x + 1, lx, m);
-        build(A, 2 * x + 2, m, rx);
-
-        t[x] = f(t[2 * x + 1], t[2 * x + 2]);
+        update(idx, val, 0, 0, size);
     }
 
-    void set(int &i, int &v, int x, int lx, int rx)
-    {
-        if (rx - lx == 1)
-        {
-            t[x] = v;
-            return;
-        }
-
-        int m = (lx + rx) >> 1;
-
-        if (i < m)
-            set(i, v, 2 * x + 1, lx, m);
-        else
-            set(i, v, 2 * x + 2, m, rx);
-
-        t[x] = f(t[2 * x + 1], t[2 * x + 2]);
-    }
-
-    int query(int &l, int &r, int x, int lx, int rx)
-    {
-        if (lx >= r or l >= rx)
-            return init;
-
-        if (l <= lx and rx <= r)
-            return t[x];
-
-        int m = (lx + rx) >> 1;
-
-        int ans1 = query(l, r, 2 * x + 1, lx, m);
-        int ans2 = query(l, r, 2 * x + 2, m, rx);
-
-        return f(ans1, ans2);
-    }
-
-    void set(int &i, int &v)
-    {
-        set(i, v, 0, 0, size);
-    }
-
-    int query(int &l, int &r)
+    Node query(int &l, int &r)
     {
         return query(l, r, 0, 0, size);
     }
 };
 
+//------------------------------------------------------------------------------
 void solve()
 {
     int n, q;
     cin >> n >> q;
-
     v(int) A(n);
-    for (int &x : A)
-        cin >> x;
-
-    SegTree st(A);
-
+    for (int i = 0; i < n; i++)
+        cin >> A[i];
+    SegmentTree st(A);
     while (q--)
     {
         int op;
@@ -192,13 +137,14 @@ void solve()
         {
             int i, v;
             cin >> i >> v;
-            st.set(i, v);
+            st.update(i, v);
         }
         else
         {
             int l, r;
             cin >> l >> r;
-            cout << st.query(l, r) << endl;
+            Node ans = st.query(l, r);
+            cout << ans.val << endl;
         }
     }
 }

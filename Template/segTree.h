@@ -1,87 +1,106 @@
-#include <iostream>
 #include <vector>
+#include <iostream>
 using namespace std;
-#define v(Type) vector<Type>
 
-struct SegTree
+#define v(type) vector<type>
+#define int long long
+
+struct Node
 {
-    v(int) t;
-    int size;
+    //
 
-    int init = 0;
-
-    int f(int &a, int &b)
+    Node()
     {
-        return a + b;
     }
+};
 
-    SegTree(v(int) & A)
+class SegmentTree
+{
+private:
+    v(Node) tree;
+    int size;
+    //
+    Node neutralValue;
+
+    Node merge(Node &a, Node &b)
     {
-        size = 1;
-        int n = A.size();
-        while (size < n)
-            size *= 2;
-        t.assign(2 * size, init);
-        build(A, 0, 0, size);
+        Node ans;
+        //
+        return ans;
     }
 
     void build(v(int) & A, int x, int lx, int rx)
     {
+
         if (rx - lx == 1)
         {
-            if (lx < A.size())
-                t[x] = A[lx];
+            if (lx < (int)A.size())
+            {
+                Node temp;
+                //
+                tree[x] = temp;
+            }
             return;
         }
 
-        int m = (lx + rx) >> 1;
-
-        build(A, 2 * x + 1, lx, m);
-        build(A, 2 * x + 2, m, rx);
-
-        t[x] = f(t[2 * x + 1], t[2 * x + 2]);
+        int mx = (lx + rx) >> 1ll;
+        build(A, (x << 1ll) + 1ll, lx, mx);
+        build(A, (x << 1ll) + 2ll, mx, rx);
+        tree[x] = merge(tree[(x << 1ll) + 1ll], tree[(x << 1ll) + 2ll]);
     }
 
-    void set(int &i, int &v, int x, int lx, int rx)
+    void update(int idx, int val, int x, int lx, int rx)
     {
+
         if (rx - lx == 1)
         {
-            t[x] = v;
+            Node temp;
+            //
+            tree[x] = temp;
             return;
         }
 
-        int m = (lx + rx) >> 1;
+        int mx = (lx + rx) >> 1ll;
 
-        if (i < m)
-            set(i, v, 2 * x + 1, lx, m);
+        if (idx < mx)
+            update(idx, val, (x << 1ll) + 1ll, lx, mx);
         else
-            set(i, v, 2 * x + 2, m, rx);
+            update(idx, val, (x << 1ll) + 2ll, mx, rx);
 
-        t[x] = f(t[2 * x + 1], t[2 * x + 2]);
+        tree[x] = merge(tree[(x << 1ll) + 1ll], tree[(x << 1ll) + 2ll]);
     }
 
-    int query(int &l, int &r, int x, int lx, int rx)
+    Node query(int l, int r, int x, int lx, int rx)
     {
         if (lx >= r or l >= rx)
-            return init;
+            return neutralValue;
 
-        if (l <= lx and rx <= r)
-            return t[x];
+        if (rx - lx == 1)
+            return tree[x];
 
-        int m = (lx + rx) >> 1;
-
-        int ans1 = query(l, r, 2 * x + 1, lx, m);
-        int ans2 = query(l, r, 2 * x + 2, m, rx);
-
-        return f(ans1, ans2);
+        int mx = (lx + rx) >> 1ll;
+        Node ans1 = query(l, r, (x << 1ll) + 1ll, lx, mx);
+        Node ans2 = query(l, r, (x << 1ll) + 2ll, mx, rx);
+        Node ans = merge(ans1, ans2);
+        return ans;
     }
 
-    void set(int &i, int &v)
+public:
+    SegmentTree(v(int) & A)
     {
-        set(i, v, 0, 0, size);
+        size = 1;
+        while (size < (int)A.size())
+            size <<= 1;
+        tree.assign(size << 1ll, neutralValue);
+        build(A, 0, 0, size);
     }
 
-    int query(int &l, int &r)
+    void update(int idx, int val)
+    {
+        update(idx, val, 0, 0, size);
+    }
+
+    Node query(int l, int r)
     {
         return query(l, r, 0, 0, size);
     }
