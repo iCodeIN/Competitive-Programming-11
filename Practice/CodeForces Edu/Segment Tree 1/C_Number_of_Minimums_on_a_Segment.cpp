@@ -86,28 +86,43 @@ public:
     }
 
 } Math;
+
 //------------------------------------------------------------------------------
-struct Node
+
+struct item
 {
-    int v = INT32_MAX, c = 0;
+    int m = INT32_MAX, c = 0;
 };
 
 class SegmentTree
 {
 private:
-    v(Node) tree;
+    v(item) tree;
     int size;
-    //
-    Node neutralValue;
+    item neutralValue;
 
-    Node merge(Node &a, Node &b)
+    item merge(item &a, item &b)
     {
-        Node ans;
         if (a.m == b.m)
-        {
-            ans.m = a.m;
-        }
-        return ans;
+            return {a.m, a.c + b.c};
+        else if (a.m < b.m)
+            return a;
+        else
+            return b;
+    }
+
+    item single(int val)
+    {
+        return {val, 1};
+    }
+
+    void init(v(int) & A)
+    {
+        size = 1;
+        while (size < (int)A.size())
+            size <<= 1;
+        tree.resize(size << 1);
+        build(A, 0, 0, size);
     }
 
     void build(v(int) & A, int x, int lx, int rx)
@@ -116,88 +131,109 @@ private:
         if (rx - lx == 1)
         {
             if (lx < (int)A.size())
-            {
-                Node temp;
-                //
-                tree[x] = temp;
-            }
+                tree[x] = single(A[lx]);
+
             return;
         }
 
-        int mx = (lx + rx) >> 1ll;
-        build(A, (x << 1ll) + 1ll, lx, mx);
-        build(A, (x << 1ll) + 2ll, mx, rx);
-        tree[x] = merge(tree[(x << 1ll) + 1ll], tree[(x << 1ll) + 2ll]);
+        int mx = (lx + rx) >> 1;
+
+        build(A, (x << 1) + 1, lx, mx);
+        build(A, (x << 1) + 2, mx, rx);
+
+        tree[x] = merge(tree[(x << 1) + 1], tree[(x << 1) + 2]);
     }
 
-    void update(int idx, int val, int x, int lx, int rx)
+    void update(int &idx, int &val, int x, int lx, int rx)
     {
 
         if (rx - lx == 1)
         {
-            Node temp;
-            //
-            tree[x] = temp;
+            tree[x] = single(val);
             return;
         }
 
         int mx = (lx + rx) >> 1ll;
 
         if (idx < mx)
-            update(idx, val, (x << 1ll) + 1ll, lx, mx);
+            update(idx, val, (x << 1) + 1, lx, mx);
         else
-            update(idx, val, (x << 1ll) + 2ll, mx, rx);
+            update(idx, val, (x << 1) + 2, mx, rx);
 
-        tree[x] = merge(tree[(x << 1ll) + 1ll], tree[(x << 1ll) + 2ll]);
+        tree[x] = merge(tree[(x << 1) + 1], tree[(x << 1) + 2]);
     }
 
-    Node query(int l, int r, int x, int lx, int rx)
+    item query(int &l, int &r, int x, int lx, int rx)
     {
         if (lx >= r or l >= rx)
             return neutralValue;
 
-        if (rx - lx == 1)
+        if (l <= lx and rx <= r)
             return tree[x];
 
-        int mx = (lx + rx) >> 1ll;
-        Node ans1 = query(l, r, (x << 1ll) + 1ll, lx, mx);
-        Node ans2 = query(l, r, (x << 1ll) + 2ll, mx, rx);
-        Node ans = merge(ans1, ans2);
-        return ans;
+        int mx = (lx + rx) >> 1;
+
+        item ans1 = query(l, r, (x << 1) + 1, lx, mx);
+        item ans2 = query(l, r, (x << 1) + 2, mx, rx);
+
+        return merge(ans1, ans2);
     }
 
 public:
     SegmentTree(v(int) & A)
     {
-        size = 1;
-        while (size < (int)A.size())
-            size <<= 1;
-        tree.assign(size << 1ll, neutralValue);
-        build(A, 0, 0, size);
+        init(A);
+        return;
     }
 
-    void update(int idx, int val)
+    void update(int &idx, int &val)
     {
         update(idx, val, 0, 0, size);
+        return;
     }
 
-    Node query(int l, int r)
+    item query(int &l, int &r)
     {
         return query(l, r, 0, 0, size);
     }
 };
-
 //------------------------------------------------------------------------------
 void solve()
 {
+    int n, q;
+    cin >> n >> q;
+    v(int) A(n);
+    for (int &x : A)
+        cin >> x;
+    SegmentTree st(A);
+
+    while (q--)
+    {
+        int op;
+        cin >> op;
+
+        if (op == 1)
+        {
+            int idx, val;
+            cin >> idx >> val;
+            st.update(idx, val);
+        }
+        else
+        {
+            int l, r;
+            cin >> l >> r;
+            auto ans = st.query(l, r);
+            cout << ans.m << " " << ans.c << endl;
+        }
+    }
 }
 //------------------------------------------------------------------------------
 int32_t main()
 {
     FastIO;
 
-    w(T)
-        solve();
+    // w(T)
+    solve();
 
     return 0;
 }

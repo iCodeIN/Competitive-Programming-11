@@ -18,28 +18,105 @@ using namespace std;
     int T;    \
     cin >> T; \
     while (T--)
-// #define int long long int
+#define int long long int
 #define mod 1000000007ll
 #define endl "\n"
-
-struct Node
+//------------------------------------------------------------------------------
+// Any fucntion can be called using Math.function_name();
+//------------------------------------------------------------------------------
+class Math
 {
-    int val = 0;
+public:
+    //Returns gcd of two numbers
+    int gcd(int a, int b)
+    {
+        return (a % b == 0) ? b : gcd(b, a % b);
+    }
+
+    //Returns lcm of two numbers
+    int lcm(int a, int b)
+    {
+        return a * (b / gcd(a, b));
+    }
+
+    // Returns flag array isPrime
+    // isPrime[i] = true (if i is Prime)
+    // isPrime[i] = false (if i is not Prime)
+    vector<bool> *seiveOfEratosthenes(const int N)
+    {
+        vector<bool> *isPrime = new vector<bool>(N + 1, true);
+        (*isPrime)[0] = (*isPrime)[1] = false;
+        for (int i = 2; i * i <= N; ++i)
+            if ((*isPrime)[i])
+                for (int j = i * i; j <= N; j += i)
+                    (*isPrime)[j] = false;
+
+        return isPrime;
+    }
+
+    //Returns (x ^ n)
+    int pow(const int &x, int n)
+    {
+        if (n == 0)
+            return 1;
+        int h = pow(x, n / 2);
+        return (n & 1) ? h * h * x : h * h;
+    }
+
+    //Returns (x ^ n) % M
+    int pow(const int &x, int n, const int &M)
+    {
+        if (n == 0)
+            return 1;
+        int h = pow(x, n / 2) % M;
+        return (n & 1) ? (h * h * x) % M : (h * h) % M;
+    }
+
+    //Returns all Primes <= N
+    vector<int> *primesUptoN(const int N)
+    {
+        vector<bool> *isPrime = seiveOfEratosthenes(N);
+        vector<int> *Primes = new vector<int>;
+        if (2 <= N)
+            (*Primes).push_back(2);
+        for (int i = 3; i <= N; i += 2)
+            if ((*isPrime)[i])
+                (*Primes).push_back(i);
+        return Primes;
+    }
+
+} Math;
+
+//------------------------------------------------------------------------------
+struct item
+{
+    int s = 0;
 };
 
-struct SegmentTree
+class SegmentTree
 {
 private:
-    v(Node) tree;
+    v(item) tree;
     int size;
-    Node neutralValue;
-    Node base;
+    item neutralValue;
 
-    Node merge(Node &a, Node &b)
+    item merge(item &a, item &b)
     {
-        Node ans;
-        ans.val = a.val + b.val;
-        return ans;
+        return {a.s + b.s};
+    }
+
+    item single(int val)
+    {
+        return {val};
+    }
+
+    void init(v(int) & A)
+    {
+        size = 1;
+        while (size < (int)A.size())
+            size <<= 1;
+        tree.resize(size << 1);
+        build(A, 0, 0, size);
     }
 
     void build(v(int) & A, int x, int lx, int rx)
@@ -47,19 +124,18 @@ private:
 
         if (rx - lx == 1)
         {
-            if (lx < A.size())
-            {
-                base.val = A[lx];
-                tree[x] = base;
-            }
+            if (lx < (int)A.size())
+                tree[x] = single(A[lx]);
+
             return;
         }
 
         int mx = (lx + rx) >> 1;
-        build(A, (2 * x) + 1, lx, mx);
-        build(A, (2 * x) + 2, mx, rx);
 
-        tree[x] = merge(tree[(2 * x) + 1], tree[(2 * x) + 2]);
+        build(A, (x << 1) + 1, lx, mx);
+        build(A, (x << 1) + 2, mx, rx);
+
+        tree[x] = merge(tree[(x << 1) + 1], tree[(x << 1) + 2]);
     }
 
     void update(int &idx, int &val, int x, int lx, int rx)
@@ -67,67 +143,64 @@ private:
 
         if (rx - lx == 1)
         {
-            base.val = val;
-            tree[x] = base;
+            tree[x] = single(val);
             return;
         }
 
-        int mx = (lx + rx) >> 1;
+        int mx = (lx + rx) >> 1ll;
 
         if (idx < mx)
-            update(idx, val, (2 * x) + 1, lx, mx);
+            update(idx, val, (x << 1) + 1, lx, mx);
         else
-            update(idx, val, (2 * x) + 2, mx, rx);
+            update(idx, val, (x << 1) + 2, mx, rx);
 
-        tree[x] = merge(tree[(2 * x) + 1], tree[(2 * x) + 2]);
+        tree[x] = merge(tree[(x << 1) + 1], tree[(x << 1) + 2]);
     }
 
-    Node query(int &l, int &r, int x, int lx, int rx)
+    item query(int &l, int &r, int x, int lx, int rx)
     {
         if (lx >= r or l >= rx)
             return neutralValue;
 
-        if (rx - lx == 1)
+        if (l <= lx and rx <= r)
             return tree[x];
 
         int mx = (lx + rx) >> 1;
-        Node ans1 = query(l, r, 2 * x + 1, lx, mx);
-        Node ans2 = query(l, r, 2 * x + 2, mx, rx);
-        Node ans = merge(ans1, ans2);
-        return ans;
+
+        item ans1 = query(l, r, (x << 1) + 1, lx, mx);
+        item ans2 = query(l, r, (x << 1) + 2, mx, rx);
+
+        return merge(ans1, ans2);
     }
 
 public:
     SegmentTree(v(int) & A)
     {
-        size = 1;
-        int n = A.size();
-        while (size < n)
-            size *= 2;
-        tree.assign((2 * size) + 1, neutralValue);
-        build(A, 0, 0, size);
+        init(A);
+        return;
     }
 
     void update(int &idx, int &val)
     {
         update(idx, val, 0, 0, size);
+        return;
     }
 
-    Node query(int &l, int &r)
+    item query(int &l, int &r)
     {
         return query(l, r, 0, 0, size);
     }
 };
-
 //------------------------------------------------------------------------------
 void solve()
 {
     int n, q;
     cin >> n >> q;
     v(int) A(n);
-    for (int i = 0; i < n; i++)
-        cin >> A[i];
+    for (int &x : A)
+        cin >> x;
     SegmentTree st(A);
+
     while (q--)
     {
         int op;
@@ -135,16 +208,16 @@ void solve()
 
         if (op == 1)
         {
-            int i, v;
-            cin >> i >> v;
-            st.update(i, v);
+            int idx, val;
+            cin >> idx >> val;
+            st.update(idx, val);
         }
         else
         {
             int l, r;
             cin >> l >> r;
-            Node ans = st.query(l, r);
-            cout << ans.val << endl;
+            auto ans = st.query(l, r);
+            cout << ans.s << endl;
         }
     }
 }
