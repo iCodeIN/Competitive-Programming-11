@@ -1,78 +1,121 @@
-#include <bits/stdc++.h>
-using namespace std;
 
-class Solution
+//------------------------------------------------------------------------------
+#include <iostream>
+#include <vector>
+// #include <bits/stdc++.h>
+// #include <cmath>
+#include <algorithm>
+// #include <unordered_map>
+// #include <map>
+// #include <set>
+// #include <unordered_set>
+//------------------------------------------------------------------------------
+using namespace std;
+//------------------------------------------------------------------------------
+#define FastIO ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL);
+#define v(Type) vector<Type>
+#define w(T)  \
+    int T;    \
+    cin >> T; \
+    while (T--)
+#define int long long int
+#define mod 1000000007ll
+#define endl "\n"
+//------------------------------------------------------------------------------
+// Any fucntion can be called using Math.function_name();
+//------------------------------------------------------------------------------
+class Math
 {
 public:
-    string fractionToDecimal(long long int numerator, long long int denominator)
+    //Returns gcd of two numbers
+    int gcd(int a, int b)
     {
-
-        if (numerator == 0)
-        {
-            return "0";
-        }
-
-        bool isPointIntroduced = false;
-        string s = "";
-        unordered_map<long long int, long long int> mp;
-        bool numNeg = (numerator < 0);
-        bool denNeg = (denominator < 0);
-
-        numerator = abs(numerator);
-        denominator = abs(denominator);
-
-        while (1)
-        {
-
-            if (numerator < denominator)
-            {
-                if (isPointIntroduced)
-                {
-                    numerator *= 10;
-                    s += '0';
-                }
-                else
-                {
-                    if (s.size() == 0)
-                    {
-                        s += '0';
-                    }
-                    s += '.';
-                    numerator *= 10;
-                    isPointIntroduced = true;
-                }
-            }
-            else
-            {
-
-                if (numerator % denominator == 0)
-                {
-                    s += to_string(numerator / denominator);
-                    if (numNeg ^ denNeg)
-                    {
-                        s = '-' + s;
-                    }
-                    return s;
-                }
-                else if (mp.count(numerator) > 0)
-                {
-                    s.insert(mp[numerator], "(");
-                    s += ')';
-                    if (numNeg ^ denNeg)
-                    {
-                        s = '-' + s;
-                    }
-                    return s;
-                }
-                else
-                {
-                    mp[numerator] = s.length();
-                    s += to_string(numerator / denominator);
-                    numerator %= denominator;
-                    if (isPointIntroduced)
-                        numerator *= 10;
-                }
-            }
-        }
+        return (a % b == 0) ? b : gcd(b, a % b);
     }
-};
+
+    //Returns lcm of two numbers
+    int lcm(int a, int b)
+    {
+        return a * (b / gcd(a, b));
+    }
+
+    // Returns flag array isPrime
+    // isPrime[i] = true (if i is Prime)
+    // isPrime[i] = false (if i is not Prime)
+    vector<bool> *seiveOfEratosthenes(const int N)
+    {
+        vector<bool> *isPrime = new vector<bool>(N + 1, true);
+        (*isPrime)[0] = (*isPrime)[1] = false;
+        for (int i = 2; i * i <= N; ++i)
+            if ((*isPrime)[i])
+                for (int j = i * i; j <= N; j += i)
+                    (*isPrime)[j] = false;
+
+        return isPrime;
+    }
+
+    //Returns (x ^ n)
+    int pow(const int &x, int n)
+    {
+        if (n == 0)
+            return 1;
+        int h = pow(x, n / 2);
+        return (n & 1) ? h * h * x : h * h;
+    }
+
+    //Returns (x ^ n) % M
+    int pow(const int &x, int n, const int &M)
+    {
+        if (n == 0)
+            return 1;
+        int h = pow(x, n / 2) % M;
+        return (n & 1) ? (h * h * x) % M : (h * h) % M;
+    }
+
+    //Returns all Primes <= N
+    vector<int> *primesUptoN(const int N)
+    {
+        vector<bool> *isPrime = seiveOfEratosthenes(N);
+        vector<int> *Primes = new vector<int>;
+        if (2 <= N)
+            (*Primes).push_back(2);
+        for (int i = 3; i <= N; i += 2)
+            if ((*isPrime)[i])
+                (*Primes).push_back(i);
+        return Primes;
+    }
+
+} Math;
+//------------------------------------------------------------------------------
+void solve()
+{
+    int n;
+    cin >> n;
+    v(int) A(n);
+    for (int i = 0; i < n; i++)
+        cin >> A[i];
+
+    sort(A.begin(), A.end());
+    int cur = 1;
+    int ans = 1;
+    for (int i = 1; i < n; i++)
+    {
+        if (A[i] != A[i - 1])
+            cur++;
+        ans += cur;
+    }
+    cout << ans << endl;
+}
+//------------------------------------------------------------------------------
+int32_t main()
+{
+    FastIO;
+    int test = 1;
+    w(T)
+    {
+        cout << "Case #" << test++ << ": ";
+        solve();
+    }
+    return 0;
+}
+//------------------------------------------------------------------------------
