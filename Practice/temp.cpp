@@ -1,129 +1,69 @@
-
-//------------------------------------------------------------------------------
 #include <iostream>
 #include <vector>
-// #include <bits/stdc++.h>
-// #include <cmath>
-#include <algorithm>
-// #include <unordered_map>
-// #include <map>
-// #include <set>
-// #include <unordered_set>
-//------------------------------------------------------------------------------
 using namespace std;
-//------------------------------------------------------------------------------
-#define FastIO ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL);
-#define v(Type) vector<Type>
-#define w(T)  \
-    int T;    \
-    cin >> T; \
-    while (T--)
-#define int long long int
-#define mod 1000000007ll
-#define endl "\n"
-//------------------------------------------------------------------------------
-// Any fucntion can be called using Math.function_name();
-//------------------------------------------------------------------------------
-class Math
+
+struct Node
 {
-public:
-    //Returns gcd of two numbers
-    int gcd(int a, int b)
+    int wt;
+    int parent;
+    int vertex;
+    Node()
     {
-        return (a % b == 0) ? b : gcd(b, a % b);
+        wt = INT32_MAX;
+        parent = -1;
+        vertex = -1;
     }
+};
 
-    //Returns lcm of two numbers
-    int lcm(int a, int b)
-    {
-        return a * (b / gcd(a, b));
-    }
-
-    // Returns flag array isPrime
-    // isPrime[i] = true (if i is Prime)
-    // isPrime[i] = false (if i is not Prime)
-    vector<bool> *seiveOfEratosthenes(const int N)
-    {
-        vector<bool> *isPrime = new vector<bool>(N + 1, true);
-        (*isPrime)[0] = (*isPrime)[1] = false;
-        for (int i = 2; i * i <= N; ++i)
-            if ((*isPrime)[i])
-                for (int j = i * i; j <= N; j += i)
-                    (*isPrime)[j] = false;
-
-        return isPrime;
-    }
-
-    //Returns (x ^ n)
-    int pow(const int &x, int n)
-    {
-        if (n == 0)
-            return 1;
-        int h = pow(x, n / 2);
-        return (n & 1) ? h * h * x : h * h;
-    }
-
-    //Returns (x ^ n) % M
-    int pow(const int &x, int n, const int &M)
-    {
-        if (n == 0)
-            return 1;
-        int h = pow(x, n / 2) % M;
-        return (n & 1) ? (h * h * x) % M : (h * h) % M;
-    }
-
-    //Returns all Primes <= N
-    vector<int> *primesUptoN(const int N)
-    {
-        vector<bool> *isPrime = seiveOfEratosthenes(N);
-        vector<int> *Primes = new vector<int>;
-        if (2 <= N)
-            (*Primes).push_back(2);
-        for (int i = 3; i <= N; i += 2)
-            if ((*isPrime)[i])
-                (*Primes).push_back(i);
-        return Primes;
-    }
-
-} Math;
-//------------------------------------------------------------------------------
-void solve()
+void explore(int x, vector<vector<int>> &adjMatrix, vector<Node> &vc, vector<bool> &visited)
 {
-    int n;
-    cin >> n;
-    v(int) A(n);
-    for (int i = 0; i < n; i++)
-        cin >> A[i];
-    v(string) Ans(n);
-
-    for (int i = 0; i < n; i++)
-    {
-        char ch = (i % 2 == 1) ? 'A' : 'B';
-        for (int j = 0; j < A[i]; j++, ch++)
-            Ans[i] += ch;
-
-        if (i % 2 == 1)
-        {
-            reverse(Ans[i].begin(), Ans[i].end());
-            if (Ans[i][0] >= Ans[i - 1][A[i - 1] - 1])
-                Ans[i - 1][A[i - 1] - 1] = Ans[i][0] + 1;
-        }
-    }
-    cout << 'A';
-    for (int i = 0; i < n; i++)
-        cout << Ans[i];
-    cout << endl;
+    visited[x] = true;
+    for (int j = 0; j < vc.size(); j++)
+        if (adjMatrix[x][j] and !visited[j] and vc[j].wt >= adjMatrix[x][j])
+            vc[j].wt = adjMatrix[x][j], vc[j].parent = x;
 }
-//------------------------------------------------------------------------------
-int32_t main()
+
+Node findMin(vector<Node> &vc, vector<bool> &visited)
 {
-    FastIO;
-    int test = 1;
-    w(T)
+    Node ans;
+    for (int i = 0; i < vc.size(); i++)
+        if (!visited[i] and vc[i].wt < ans.wt)
+            ans = vc[i];
+    return ans;
+}
+int main()
+{
+    int v, e;
+    cin >> v >> e;
+
+    vector<bool> visited(v, false);
+    vector<vector<int>> adjMatrix(v, vector<int>(v));
+
+    for (int i = 0; i < e; i++)
     {
-        cout << "Case #" << test++ << ": ";
-        solve();
+        int v1, v2, wt;
+        cin >> v1 >> v2 >> wt;
+
+        adjMatrix[v1][v2] = wt;
+        adjMatrix[v2][v1] = wt;
     }
+
+    vector<Node> vc(v);
+
+    vc[0].wt = 0;
+
+    for (int i = 0; i < v; i++)
+        vc[i].vertex = i;
+
+    for (int i = 0; i < v; i++)
+    {
+        Node x = findMin(vc, visited);
+        // cout << x.vertex << endl;
+        explore(x.vertex, adjMatrix, vc, visited);
+    }
+
+    for (int i = 1; i < v; i++)
+        if (vc[i].parent != -1)
+            cout << min(i, vc[i].parent) << " " << max(i, vc[i].parent) << " " << vc[i].wt << endl;
     return 0;
 }
-//------------------------------------------------------------------------------

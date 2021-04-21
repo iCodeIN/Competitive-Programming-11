@@ -1,121 +1,78 @@
-
-//------------------------------------------------------------------------------
 #include <iostream>
-#include <vector>
-// #include <bits/stdc++.h>
-// #include <cmath>
-#include <algorithm>
-// #include <unordered_map>
-// #include <map>
-// #include <set>
-// #include <unordered_set>
-//------------------------------------------------------------------------------
+#include <climits>
 using namespace std;
-//------------------------------------------------------------------------------
-#define FastIO ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL);
-#define v(Type) vector<Type>
-#define w(T)  \
-    int T;    \
-    cin >> T; \
-    while (T--)
-#define int long long int
-#define mod 1000000007ll
-#define endl "\n"
-//------------------------------------------------------------------------------
-// Any fucntion can be called using Math.function_name();
-//------------------------------------------------------------------------------
-class Math
+
+int main()
 {
-public:
-    //Returns gcd of two numbers
-    int gcd(int a, int b)
-    {
-        return (a % b == 0) ? b : gcd(b, a % b);
-    }
-
-    //Returns lcm of two numbers
-    int lcm(int a, int b)
-    {
-        return a * (b / gcd(a, b));
-    }
-
-    // Returns flag array isPrime
-    // isPrime[i] = true (if i is Prime)
-    // isPrime[i] = false (if i is not Prime)
-    vector<bool> *seiveOfEratosthenes(const int N)
-    {
-        vector<bool> *isPrime = new vector<bool>(N + 1, true);
-        (*isPrime)[0] = (*isPrime)[1] = false;
-        for (int i = 2; i * i <= N; ++i)
-            if ((*isPrime)[i])
-                for (int j = i * i; j <= N; j += i)
-                    (*isPrime)[j] = false;
-
-        return isPrime;
-    }
-
-    //Returns (x ^ n)
-    int pow(const int &x, int n)
-    {
-        if (n == 0)
-            return 1;
-        int h = pow(x, n / 2);
-        return (n & 1) ? h * h * x : h * h;
-    }
-
-    //Returns (x ^ n) % M
-    int pow(const int &x, int n, const int &M)
-    {
-        if (n == 0)
-            return 1;
-        int h = pow(x, n / 2) % M;
-        return (n & 1) ? (h * h * x) % M : (h * h) % M;
-    }
-
-    //Returns all Primes <= N
-    vector<int> *primesUptoN(const int N)
-    {
-        vector<bool> *isPrime = seiveOfEratosthenes(N);
-        vector<int> *Primes = new vector<int>;
-        if (2 <= N)
-            (*Primes).push_back(2);
-        for (int i = 3; i <= N; i += 2)
-            if ((*isPrime)[i])
-                (*Primes).push_back(i);
-        return Primes;
-    }
-
-} Math;
-//------------------------------------------------------------------------------
-void solve()
-{
-    int n;
-    cin >> n;
-    v(int) A(n);
+    // Write your code here
+    int n, e;
+    cin >> n >> e;
+    int **edges = new int *[n];
     for (int i = 0; i < n; i++)
-        cin >> A[i];
+    {
+        edges[i] = new int[n];
+        for (int j = 0; j < n; j++)
+        {
+            edges[i][j] = -1;
+        }
+    }
 
-    sort(A.begin(), A.end());
-    int cur = 1;
-    int ans = 1;
-    for (int i = 1; i < n; i++)
+    for (int i = 0; i < e; i++)
     {
-        if (A[i] != A[i - 1])
-            cur++;
-        ans += cur;
+        int firstVertex, secondVertex, weight;
+        cin >> firstVertex >> secondVertex >> weight;
+        edges[firstVertex][secondVertex] = weight;
+        edges[secondVertex][firstVertex] = weight;
     }
-    cout << ans << endl;
-}
-//------------------------------------------------------------------------------
-int32_t main()
-{
-    FastIO;
-    int test = 1;
-    w(T)
+
+    int *parent = new int[n];
+
+    bool *visited = new bool[n];
+    int *weight = new int[n];
+
+    for (int i = 0; i < n; i++)
     {
-        cout << "Case #" << test++ << ": ";
-        solve();
+        visited[i] = false;
+        weight[i] = INT_MAX;
     }
-    return 0;
+
+    weight[0] = 0;
+    for (int count = 0; count < n; count++)
+    {
+        int temp, minWeight = INT_MAX;
+        for (int i = 0; i < n; i++)
+        {
+            if (!visited[i] && minWeight > weight[i])
+            {
+                minWeight = weight[i];
+                temp = i;
+            }
+        }
+        visited[temp] = true;
+        for (int i = 0; i < n; i++)
+        {
+            if (edges[temp][i] != -1)
+            {
+                if (weight[i] >= edges[temp][i] && !visited[i])
+                {
+                    weight[i] = edges[temp][i];
+                    parent[i] = temp;
+                }
+            }
+        }
+    }
+    for (int i = 0; i < n; i++)
+    {
+        if (parent[i] == -1)
+            continue;
+        if (parent[i] < i)
+        {
+            cout << parent[i] << " " << i << " ";
+        }
+        else
+        {
+            cout << i << " " << parent[i] << " ";
+        }
+        cout << weight[i] << endl;
+    }
 }
-//------------------------------------------------------------------------------
