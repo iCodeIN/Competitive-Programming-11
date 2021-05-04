@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -44,23 +46,56 @@ using namespace std;
 int dx[] = {0, 0, 1, -1};
 int dy[] = {1, -1, 0, 0};
 
-bool isSafe(int x, int y, int m, int n)
+bool safe(int x, int y, int m, int n)
 {
     return x >= 0 and y >= 0 and x < m and y < n;
 }
 
-void dfs(int x, int y, v(string) & A, v(v(bool)) & visited)
+bool dfs(int x, int y, v(v(bool)) & visited, v(string) & A, v(char) & path)
 {
+
     visited[x][y] = true;
+
+    if (A[x][y] == 'B')
+    {
+        cout << "YES\n";
+        cout << path.size() << endl;
+        for (int i = 0; i < path.size(); i++)
+            cout << path[i];
+
+        return true;
+    }
 
     for (int i = 0; i < 4; i++)
     {
-
         int X = x + dx[i];
         int Y = y + dy[i];
-        if (isSafe(X, Y, (int)A.size(), (int)A[0].size()) and A[X][Y] == '.' and !visited[X][Y])
-            dfs(X, Y, A, visited);
+        int m = A.size();
+        int n = A[0].size();
+
+        if (safe(X, Y, m, n) and (A[X][Y] == '.' or A[X][Y] == 'B') and visited[X][Y] == false)
+        {
+            char ch = 'R';
+
+            if (i == 1)
+                ch = 'L';
+            else if (i == 2)
+                ch = 'D';
+            else if (i == 3)
+                ch = 'U';
+
+            path.push_back(ch);
+
+            bool found = false;
+            found = dfs(X, Y, visited, A, path);
+
+            path.pop_back();
+
+            if (found)
+                return true;
+        }
     }
+    return false;
 }
 
 void solve()
@@ -69,24 +104,21 @@ void solve()
     cin >> m >> n;
 
     v(string) A(m);
-
     for (int i = 0; i < m; i++)
         cin >> A[i];
 
+    v(char) Path;
     v(v(bool)) visited(m, v(bool)(n, false));
-
-    int ans = 0;
-
+    bool found = false;
     for (int i = 0; i < m; i++)
-    {
         for (int j = 0; j < n; j++)
-        {
-            if (!visited[i][j] and A[i][j] == '.')
-                ans++, dfs(i, j, A, visited);
-        }
-    }
-    cout << ans << endl;
+            if (A[i][j] == 'A')
+                found = dfs(i, j, visited, A, Path);
+
+    if (!found)
+        cout << "NO";
 }
+
 int32_t main()
 {
     FastIO;
