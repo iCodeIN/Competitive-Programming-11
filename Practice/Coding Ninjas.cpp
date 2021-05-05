@@ -1,94 +1,163 @@
-#include <iostream>
-#include <vector>
-#include <set>
-using namespace std;
+/**********************************************************
 
-int dx[] = {1, 0, -1, 0, 1, -1};
-int dy[] = {0, 1, 0, -1, 1, -1};
+	Following is the Binary Tree Node class structure
 
-bool DFS(int sx, int sy, vector<vector<char>> &board, string s, set<pair<int, int>> &st, int m, int n)
+	template <typename T>
+	class BinaryTreeNode {
+    	public: 
+    	T data;
+    	BinaryTreeNode<T> *left;
+    	BinaryTreeNode<T> *right;
+
+    	BinaryTreeNode(T data) {
+        	this->data = data;
+        	left = NULL;
+        	right = NULL;
+    	}
+	};
+	
+***********************************************************/
+
+class BST
 {
+    // Define the data members
+    BinaryTreeNode<int> *root;
 
-    cout << "start : ";
-    cout << sx << " " << sy << endl;
-    if (s.size() == 0)
+public:
+    BST()
     {
-        cout << "end : ";
-        cout << sx << " " << sy << " " << 1 << endl;
-        return true;
+        // Implement the Constructor
+        root = NULL;
     }
 
-    if (s[0] != board[sx][sy])
+    /*----------------- Public Functions of BST -----------------*/
+private:
+    BinaryTreeNode<int> *minValueNode(BinaryTreeNode<int> *node)
     {
-        cout << "end : ";
-        cout << sx << " " << sy << " " << 0 << endl;
-        return false;
-    }
-    if (s.size() == 1)
-    {
-        cout << "end : ";
-        cout << sx << " " << sy << " " << 1 << endl;
-        return true;
+        BinaryTreeNode<int> *current = node;
+        while (current && current->left != NULL)
+            current = current->left;
+        return current;
     }
 
-    bool ans = false;
-
-    for (int i = 0; i < 6 and ans == false; i++)
+private:
+    BinaryTreeNode<int> *deleteNode(BinaryTreeNode<int> *node, int data)
     {
-        if (sx + dx[i] < 0 or sx + dx[i] >= m or sy + dy[i] < 0 or sy + dy[i] >= n)
+        if (node == NULL)
+            return NULL;
+
+        if (data < node->data)
         {
-            continue;
+            node->left = deleteNode(node->left, data);
         }
-        if (st.find({sx + dx[i], sy + dy[i]}) != st.end())
+
+        else if (data > node->data)
         {
-            continue;
+            node->right = deleteNode(node->right, data);
         }
-        st.insert({sx + dx[i], sy + dy[i]});
-        ans = ans or DFS(sx + dx[i], sy + dy[i], board, s.substr(1), st, m, n);
-        st.erase({sx + dx[i], sy + dy[i]});
-    }
-    cout << "end : ";
-    cout << sx << " " << sy << " " << ans << endl;
-    return ans;
-}
-
-bool hasPath(vector<vector<char>> &board, int m, int n)
-{
-
-    string s = "CODINGNINJA";
-    set<pair<int, int>> st;
-    for (int i = 0; i < m; i++)
-    {
-        for (int j = 0; j < n; j++)
+        else
         {
-            if (board[i][j] == s[0])
+            if (node->left == NULL)
             {
-                st.insert({i, j});
-                if (DFS(i, j, board, s, st, m, n) == true)
-                {
-                    return true;
-                }
-                st.clear();
+                BinaryTreeNode<int> *temp = node->right;
+                delete (node);
+                return temp;
             }
+            else if (node->right == NULL)
+            {
+                BinaryTreeNode<int> *temp = node->left;
+                free(node);
+                return temp;
+            }
+            BinaryTreeNode<int> *temp = minValueNode(node->right);
+            node->data = temp->data;
+            node->right = deleteNode(node->right, temp->data);
         }
+        return node;
     }
-    return false;
-}
 
-int main()
-{
-    int n, m;
-    cin >> n >> m;
-
-    vector<vector<char>> board(n, vector<char>(m));
-
-    for (int i = 0; i < n; ++i)
+public:
+    void remove(int data)
     {
-        for (int j = 0; j < m; ++j)
-        {
-            cin >> board[i][j];
-        }
+        // Implement the remove() function
+        root = deleteNode(root, data);
     }
 
-    cout << (hasPath(board, n, m) ? 1 : 0);
-}
+private:
+    void print(BinaryTreeNode<int> *root)
+    {
+        if (root == NULL)
+        {
+            return;
+        }
+        cout << root->data << ":";
+        if (root->left != NULL)
+        {
+            cout << "L:" << root->left->data << ",";
+        }
+        if (root->right != NULL)
+        {
+            cout << "R:" << root->right->data;
+        }
+        cout << endl;
+        print(root->left);
+        print(root->right);
+    }
+
+public:
+    void print()
+    {
+        // Implement the print() function
+        print(root);
+    }
+
+private:
+    BinaryTreeNode<int> *insert(BinaryTreeNode<int> *node, int data)
+    {
+        if (node == NULL)
+        {
+            BinaryTreeNode<int> *newNode = new BinaryTreeNode<int>(data);
+            return newNode;
+        }
+        if (data <= root->data)
+        {
+            node->left = insert(node->left, data);
+        }
+        else
+        {
+            node->right = insert(node->right, data);
+        }
+
+        return node;
+    }
+
+public:
+    void insert(int data)
+    {
+        root = insert(root, data);
+    }
+    bool help(int data, BinaryTreeNode<int> *root)
+    {
+        if (root == NULL)
+        {
+            return false;
+        }
+        if (root->data == data)
+        {
+            return true;
+        }
+        if (root->data > data)
+        {
+            return help(data, root->left);
+        }
+        else
+        {
+            return help(data, root->right);
+        }
+    }
+    bool search(int data)
+    {
+        // Implement the search() function
+        return help(data, root);
+    }
+};
