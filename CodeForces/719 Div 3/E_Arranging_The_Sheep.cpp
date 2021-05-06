@@ -77,7 +77,7 @@ void solve()
             suf[i].idx_sum += i, suf[i].count++;
     }
 
-    int ans = INT32_MAX;
+    int ans = INT64_MAX;
     for (int i = 0; i < n; i++)
     {
 
