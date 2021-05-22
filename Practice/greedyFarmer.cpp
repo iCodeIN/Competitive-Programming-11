@@ -10,7 +10,7 @@
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
-#include <map>
+// #include <map>
 // #include <set>
 // #include <queue>
 // #include <stack>
@@ -43,35 +43,44 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
+bool isGood(v(int) & A, int mx, int k)
+{
+    int div_required = 0;
+    for (int &x : A)
+    {
+        if (x > mx)
+            div_required += (x / mx) - (x % mx == 0);
+    }
+
+    return div_required <= k;
+}
+
 void solve()
 {
-    string s;
-    cin >> s;
+    int n, k;
+    cin >> n >> k;
 
-    char x;
-    int y;
-    cin >> x >> y;
-
-    int n = s.length();
-    v(int) pre(n);
-
-    pre[0] = (s[0] == x);
-    for (int i = 1; i < s.length(); i++)
-        pre[i] = pre[i - 1] + (s[i] == x);
-
-    map<int, int> mp;
-    mp[0]++;
-    int ans = 0;
+    v(int) A(n);
     for (int i = 0; i < n; i++)
+        cin >> A[i];
+    int mx = A[0];
+    for (int &x : A)
+        mx = max(mx, x);
+
+    int l = 0;
+    int r = mx + 1;
+
+    while (r - l > 1)
     {
+        int m = (l + r) / 2;
 
-        int r = pre[i] - y;
-
-        ans += mp[r];
-
-        mp[pre[i]]++;
+        if (isGood(A, m, k))
+            r = m;
+        else
+            l = m;
     }
-    cout << ans << endl;
+
+    cout << r << endl;
 }
 
 int32_t main()

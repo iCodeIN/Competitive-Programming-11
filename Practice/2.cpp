@@ -10,7 +10,7 @@
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
-#include <map>
+// #include <map>
 // #include <set>
 // #include <queue>
 // #include <stack>
@@ -45,31 +45,16 @@ using namespace std;
 
 void solve()
 {
-    string s;
-    cin >> s;
+    int n;
+    cin >> n;
 
-    char x;
-    int y;
-    cin >> x >> y;
-
-    int n = s.length();
-    v(int) pre(n);
-
-    pre[0] = (s[0] == x);
-    for (int i = 1; i < s.length(); i++)
-        pre[i] = pre[i - 1] + (s[i] == x);
-
-    map<int, int> mp;
-    mp[0]++;
     int ans = 0;
-    for (int i = 0; i < n; i++)
+
+    while (n != 0)
     {
-
-        int r = pre[i] - y;
-
-        ans += mp[r];
-
-        mp[pre[i]]++;
+        if (n & 1)
+            ans++;
+        n >>= 1;
     }
     cout << ans << endl;
 }
@@ -78,8 +63,8 @@ int32_t main()
 {
     FastIO;
 
-    // w(T)
-    solve();
+    w(T)
+        solve();
 
     return 0;
 }

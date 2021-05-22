@@ -6,11 +6,11 @@
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-// #include <algorithm>
+#include <algorithm>
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
-#include <map>
+// #include <map>
 // #include <set>
 // #include <queue>
 // #include <stack>
@@ -45,32 +45,30 @@ using namespace std;
 
 void solve()
 {
-    string s;
-    cin >> s;
-
-    char x;
-    int y;
-    cin >> x >> y;
-
-    int n = s.length();
-    v(int) pre(n);
-
-    pre[0] = (s[0] == x);
-    for (int i = 1; i < s.length(); i++)
-        pre[i] = pre[i - 1] + (s[i] == x);
-
-    map<int, int> mp;
-    mp[0]++;
-    int ans = 0;
-    for (int i = 0; i < n; i++)
+    int n;
+    cin >> n;
+    int k;
+    cin >> k;
+    // k = max(k - 1, 0ll);
+    if (k == 0)
     {
-
-        int r = pre[i] - y;
-
-        ans += mp[r];
-
-        mp[pre[i]]++;
+        int *a = NULL;
+        cout << a << endl;
     }
+    v(int) A(n);
+    for (int i = 0; i < n; i++)
+        cin >> A[i];
+    int ans = 0;
+    sort(all(A));
+    int cur = A[0];
+    for (int i = 0; i < n; i++)
+        if (cur <= A[i] + k)
+        {
+            ans += A[i] + k - cur;
+            // cout << ans << endl;
+            cur = A[i] + k;
+        }
+
     cout << ans << endl;
 }
 

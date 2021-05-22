@@ -10,9 +10,9 @@
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
-#include <map>
+// #include <map>
 // #include <set>
-// #include <queue>
+#include <queue>
 // #include <stack>
 // #include <unordered_map>
 // #include <unordered_set>
@@ -43,35 +43,65 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
+bool isgood(v(int) & A, int n, int help, int deadline)
+{
+    priority_queue<int> pq;
+    int prev = A[0];
+    for (int i = 1; i < n; i++)
+    {
+        int x = A[i];
+        if (x > prev)
+            pq.push(x - prev);
+
+        prev = x;
+    }
+
+    int ans = 0;
+    while (!pq.empty() and help > 0)
+    {
+        pq.pop();
+        help--;
+    }
+
+    while (!pq.empty())
+    {
+        ans += pq.top();
+        pq.pop();
+    }
+    return ans <= deadline;
+}
+int solve(v(int) & A, int n, int help, int deadline)
+{
+
+    int l = 0;
+    int r = n + 1;
+
+    while (r - l > 1)
+    {
+        int m = (l + r) / 2;
+
+        if (isgood(A, m, help, deadline))
+            l = m;
+        else
+            r = m;
+    }
+    return l;
+}
+
 void solve()
 {
-    string s;
-    cin >> s;
+    int n, help, deadline;
+    cin >> n >> help >> deadline;
 
-    char x;
-    int y;
-    cin >> x >> y;
+    swap(help, deadline);
+    v(int) A(n);
 
-    int n = s.length();
-    v(int) pre(n);
-
-    pre[0] = (s[0] == x);
-    for (int i = 1; i < s.length(); i++)
-        pre[i] = pre[i - 1] + (s[i] == x);
-
-    map<int, int> mp;
-    mp[0]++;
-    int ans = 0;
     for (int i = 0; i < n; i++)
-    {
+        cin >> A[i];
 
-        int r = pre[i] - y;
+    int ans = solve(A, n, help, deadline);
 
-        ans += mp[r];
-
-        mp[pre[i]]++;
-    }
-    cout << ans << endl;
+    cout << ans - 1 << endl;
 }
 
 int32_t main()

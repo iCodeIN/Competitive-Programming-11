@@ -6,11 +6,11 @@
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-// #include <algorithm>
+#include <algorithm>
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
-#include <map>
+// #include <map>
 // #include <set>
 // #include <queue>
 // #include <stack>
@@ -42,36 +42,42 @@ using namespace std;
 #define endl "\n"
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
-
+bool check(string &s)
+{
+    int n = s.length();
+    for (int i = 1; i < n; i++)
+        if (s[i] == s[i - 1])
+            return false;
+    return true;
+}
 void solve()
 {
     string s;
     cin >> s;
 
-    char x;
-    int y;
-    cin >> x >> y;
+    int x;
+    cin >> x;
 
-    int n = s.length();
-    v(int) pre(n);
-
-    pre[0] = (s[0] == x);
-    for (int i = 1; i < s.length(); i++)
-        pre[i] = pre[i - 1] + (s[i] == x);
-
-    map<int, int> mp;
-    mp[0]++;
-    int ans = 0;
-    for (int i = 0; i < n; i++)
+    int i = 0;
+    sort(all(s));
+    bool ans = false;
+    do
     {
+        if (check(s))
+        {
+            ++i;
+            if (i == x)
+            {
+                ans = true;
+                break;
+            }
+        }
+    } while (next_permutation(all(s)));
 
-        int r = pre[i] - y;
-
-        ans += mp[r];
-
-        mp[pre[i]]++;
-    }
-    cout << ans << endl;
+    if (ans)
+        cout << s << endl;
+    else
+        cout << -1 << endl;
 }
 
 int32_t main()
