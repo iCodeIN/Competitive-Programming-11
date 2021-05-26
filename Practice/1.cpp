@@ -1,87 +1,49 @@
-
-
-// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
-
-/* author : pasricha_dhruv */
-
-// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
-
-// #include <algorithm>
-// #include <bits/stdc++.h>
-// #include <cmath>
-#include <iostream>
-#include <map>
-// #include <set>
-// #include <queue>
-// #include <stack>
-// #include <unordered_map>
-// #include <unordered_set>
-#include <vector>
-
-// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
-
+#include <bits/stdc++.h>
 using namespace std;
 
-// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+#define inf INT_MAX
+#define int long long
 
-#define w(T)  \
-    int T;    \
-    cin >> T; \
-    while (T--)
+// rec : O(2^n)
+// dp  :  O(n^3)
 
-#define FastIO                        \
-    ios_base::sync_with_stdio(false); \
-    cin.tie(NULL);                    \
-    cout.tie(NULL);
+// n <= 300
+// recursion -> memoisation(Recursive DP) -> tabulation(Iterative DP)
 
-#define v(Type) vector<Type>
-#define all(x) x.begin(), x.end()
-
-#define int long long int
-#define mod 1000000007ll
-#define endl "\n"
-
-// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
-
-void solve()
+map<int, int> dp[301][301];
+int calls = 0;
+int solve(int A[], int n, int cut, int curMax)
 {
-    string s;
-    cin >> s;
-
-    char x;
-    int y;
-    cin >> x >> y;
-
-    int n = s.length();
-    v(int) pre(n);
-
-    pre[0] = (s[0] == x);
-    for (int i = 1; i < s.length(); i++)
-        pre[i] = pre[i - 1] + (s[i] == x);
-
-    map<int, int> mp;
-    mp[0]++;
-    int ans = 0;
-    for (int i = 0; i < n; i++)
+    ++calls;
+    if (n == 0)
     {
-
-        int r = pre[i] - y;
-
-        ans += mp[r];
-
-        mp[pre[i]]++;
+        if (cut == 0)
+            return curMax;
+        else
+            return inf;
     }
-    cout << ans << endl;
+    if (dp[n][cut].count(curMax) > 0)
+    {
+        return dp[n][cut][curMax];
+    }
+    // include in the current window
+    int ans1 = solve(A, n - 1, cut, max(curMax, A[n - 1]));
+    // if cut > 0
+    int ans2 = (cut > 0) ? solve(A, n - 1, cut - 1, A[n - 1]) + curMax : ans1;
+
+    return dp[n][cut][curMax] = min(ans1, ans2);
 }
 
 int32_t main()
 {
-    FastIO;
+    int A[] = {1, 5, 3, 4, 5, 1, 1, 1, 1, 1};
+    int k = 3;
+    int n = sizeof(A) / sizeof(int);
+    calls = 0;
+    for (int i = 0; i <= n; i++)
+        for (int j = 0; j <= n; j++)
+            dp[i][j].clear();
+    int ans = solve(A, n - 1, k - 1, A[n - 1]);
 
-    // w(T)
-    solve();
-
-    return 0;
+    cout << calls << endl;
 }
-
-// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
