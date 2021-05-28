@@ -53,7 +53,6 @@ using namespace std;
 int main()
 {
     int n;
-    cout << "enter n";
     cin >> n;
     for (int m = 2; m <= n; m++)
     {
