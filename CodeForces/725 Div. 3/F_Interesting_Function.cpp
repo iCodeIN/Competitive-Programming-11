@@ -71,11 +71,11 @@ int extra(int l, int r)
     string r_ = to_string(r - 1);
     memset(dp, -1, sizeof(dp));
     int ans = f(r_);
-    // cout << f(r_) << " ";
+ 
     memset(dp, -1, sizeof(dp));
     ans -= f(l_);
 
-    // cout << f(l_) << " ";
+
     return ans;
 }
 
@@ -102,3 +102,4 @@ int32_t main()
 }
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+
