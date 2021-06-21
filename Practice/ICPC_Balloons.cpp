@@ -1,0 +1,69 @@
+
+// #include <algorithm>
+// #include <bits/stdc++.h>
+// #include <cmath>
+#include <iostream>
+// #include <map>
+#include <set>
+// #include <queue>
+// #include <stack>
+// #include <unordered_map>
+// #include <unordered_set>
+#include <vector>
+
+// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+
+using namespace std;
+
+// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+
+#define w(T)  \
+    int T;    \
+    cin >> T; \
+    while (T--)
+
+#define FastIO                        \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);                    \
+    cout.tie(NULL);
+
+#define v(Type) vector<Type>
+#define all(x) x.begin(), x.end()
+
+#define int long long int
+#define mod 1000000007ll
+#define endl "\n"
+
+// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+
+void solve()
+{
+    int n;
+    cin >> n;
+    v(int) A(n);
+    for (int &x : A)
+        cin >> x;
+    set<int> s;
+    int ans = 1;
+    for (int x : A)
+    {
+        if (x >= 1 and x <= 7)
+            s.insert(x);
+        if (s.size() == 7)
+            break;
+        ans++;
+    }
+    cout << ans << endl;
+}
+
+int32_t main()
+{
+    FastIO;
+
+    w(T)
+        solve();
+
+    return 0;
+}
+
+// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
