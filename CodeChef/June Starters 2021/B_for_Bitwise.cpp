@@ -10,12 +10,12 @@
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
-// #include <map>
+#include <map>
 // #include <set>
 // #include <queue>
 // #include <stack>
 // #include <unordered_map>
-// #include <unordered_set>
+#include <unordered_set>
 #include <vector>
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
@@ -37,24 +37,11 @@ using namespace std;
 #define v(Type) vector<Type>
 #define all(x) x.begin(), x.end()
 
-#define int long long int
+// #define int long long int
 #define mod 1000000007ll
 #define endl "\n"
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
-
-void insert(int row, int idx1, int idx2, v(v(int)) & A)
-{
-    bool found = false;
-    for (int y : A[row])
-        if (y == idx1 or y == idx2)
-            found = true;
-    if (!found)
-    {
-        A[row].push_back(idx1);
-        A[row].push_back(idx2);
-    }
-}
 
 void solve()
 {
@@ -64,19 +51,39 @@ void solve()
     for (int &x : A)
         cin >> x;
     bool found = false;
-    v(v(int)) Indices(1 << 17);
-    for (int i = 0; i < n; i++)
+
+    map<int, int> mp;
+    for (int x : A)
+        mp[x]++;
+    int count = 0;
+    for (auto x : mp)
+        count += (x.second >= 2);
+    if (count >= 2)
+        found = true;
+    else
     {
-        for (int j = i + 1; j < n; j++)
+        int i = 0;
+        for (auto x : mp)
         {
-            int x = A[i] ^ A[j];
-            insert(x, i, j, Indices);
-            found = (int)Indices[x].size() >= 4;
-            if (found)
-                break;
+            int f = x.second;
+
+            A[i++] = x.first;
         }
-        if (found)
-            break;
+
+        map<int, int> F;
+        n = i;
+        for (int i = 0; i < n and !found; i++)
+        {
+            for (int j = i + 1; j < n; j++)
+            {
+                F[A[i] ^ A[j]]++;
+                if (F[A[i] ^ A[j]] == 2)
+                {
+                    found = true;
+                    break;
+                }
+            }
+        }
     }
     if (found)
         cout << "YES";
