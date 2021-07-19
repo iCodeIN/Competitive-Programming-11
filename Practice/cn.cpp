@@ -1,49 +1,55 @@
-#include <iostream>
+#include <bits/stdc++.h>
+#define int long long int
 using namespace std;
-class DynamicArray
-{
-    int *data;
-    int capacity;
-    int nextIndex;
 
-public:
-    DynamicArray()
-    {
-        data = new int[5];
-        capacity = 5;
-        nextIndex = 0;
-    }
-    void add(int element)
-    {
-        if (nextIndex == capacity)
-        {
-            int *newdata = new int[2 * capacity];
-            for (int i = 0; i < capacity; i++)
-            {
-                newdata[i] = data[i];
-            }
-            delete[] data;
-            data = newdata;
-            capacity = capacity * 2;
-        }
-        data[nextIndex] = element;
-        nextIndex++;
-    }
-    void print() const
-    {
-        for (int i = 0; i < nextIndex; i++)
-        {
-            cout << data[i] << " ";
-        }
-        cout << endl;
-    }
-};
-int main() //main
+int f(int x)
 {
-    DynamicArray d1;
-    d1.add(10);
-    d1.add(20);
-    d1.add(30);
-    d1.add(40);
-    d1.print();
+    return (x * (x + 1)) / 2;
+}
+
+int32_t main()
+{
+    int k;
+    cin >> k;
+
+    vector<int> A;
+    int i = 1;
+
+    do
+    {
+        A.push_back(f(i));
+        i++;
+    } while (A.back() <= k);
+
+    i = 0;
+    int j = A.size() - 1;
+    bool ans = false;
+
+    while (i <= j)
+    {
+        int sum = A[i] + A[j];
+
+        if (sum == k)
+        {
+            ans = true;
+            break;
+        }
+        else if (sum < k)
+        {
+            i++;
+        }
+        else
+        {
+            j--;
+        }
+    }
+
+    if (ans == true)
+    {
+        cout << "YES";
+    }
+    else
+    {
+        cout << "NO";
+    }
 }
