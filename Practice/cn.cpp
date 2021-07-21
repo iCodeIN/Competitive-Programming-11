@@ -52,4 +52,5 @@ int32_t main()
     {
         cout << "NO";
     }
+
 }
