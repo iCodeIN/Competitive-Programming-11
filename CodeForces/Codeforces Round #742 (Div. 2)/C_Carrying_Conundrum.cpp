@@ -6,8 +6,8 @@
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-// #include <algorithm>
-#include <bits/stdc++.h>
+#include <algorithm>
+// #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
 // #include <map>
@@ -43,52 +43,57 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-const int N = 5000;
-
-int dp[N + 1][N + 1];
-
-int solve(string &a, string &b, int pos1, int pos2)
+string f(string x)
 {
-    int m = a.length();
-    int n = b.length();
 
-    if (dp[pos1][pos2] != -1)
-        return dp[pos1][pos2];
+    int i = 0;
+    while (i < x.length() and x[i] == '0')
+        i++;
 
-    if (pos1 == m)
-        return n - pos2;
-    else if (pos2 == n)
-        return m - pos1;
+    x = x.substr(i);
 
-    if (a[pos1] == b[pos2])
-        return solve(a, b, pos1 + 1, pos2 + 1);
-
-    int ans1 = solve(a, b, pos1 + 1, pos2);
-    int ans2 = solve(a, b, pos1, pos2 + 1);
-    int ans3 = solve(a, b, pos1 + 1, pos2 + 1);
-
-    return dp[pos1][pos2] = 1 + min({ans1, ans2, ans3});
+    if (x == "")
+        return "0";
+    return x;
 }
 
 void solve()
 {
-    string a, b;
-    cin >> a >> b;
+    int n;
+    cin >> n;
 
-    memset(dp, -1, sizeof(dp));
-    int ans1 = solve(a, b, 0, 0);
-    memset(dp, -1, sizeof(dp));
-    int ans2 = solve(b, a, 0, 0);
+    string s1 = "";
+    string s2 = "";
 
-    cout << min(ans1, ans2) << endl;
+    int i = 1;
+    while (n != 0)
+    {
+        if (i & 1)
+            s1 += char(n % 10 + '0');
+        else
+            s2 += char(n % 10 + '0');
+
+        i++;
+        n /= 10;
+    }
+
+    reverse(all(s1));
+    reverse(all(s2));
+
+    s1 = f(s1);
+    s2 = f(s2);
+
+    int ans = (stoll(s1) + 1) * (stoll(s2) + 1) - 2;
+
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
 
-    // w(T)
-    solve();
+    w(T)
+        solve();
 
     return 0;
 }

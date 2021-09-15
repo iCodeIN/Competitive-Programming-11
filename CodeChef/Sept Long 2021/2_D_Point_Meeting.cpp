@@ -7,11 +7,11 @@
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 // #include <algorithm>
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
 // #include <map>
-// #include <set>
+#include <set>
 // #include <queue>
 // #include <stack>
 // #include <unordered_map>
@@ -43,52 +43,56 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-const int N = 5000;
-
-int dp[N + 1][N + 1];
-
-int solve(string &a, string &b, int pos1, int pos2)
+int f(v(int) & X, v(int) & Y, int x, int y)
 {
-    int m = a.length();
-    int n = b.length();
 
-    if (dp[pos1][pos2] != -1)
-        return dp[pos1][pos2];
+    int ans = 0;
+    int n = X.size();
 
-    if (pos1 == m)
-        return n - pos2;
-    else if (pos2 == n)
-        return m - pos1;
+    for (int i = 0; i < n; i++)
+    {
+        int k = x - X[i];
 
-    if (a[pos1] == b[pos2])
-        return solve(a, b, pos1 + 1, pos2 + 1);
+        ans += (k != 0);
+        ans += (!((Y[i] == y) or (Y[i] + k == y) or (Y[i] - k == y)));
+    }
 
-    int ans1 = solve(a, b, pos1 + 1, pos2);
-    int ans2 = solve(a, b, pos1, pos2 + 1);
-    int ans3 = solve(a, b, pos1 + 1, pos2 + 1);
-
-    return dp[pos1][pos2] = 1 + min({ans1, ans2, ans3});
+    return ans;
 }
 
 void solve()
 {
-    string a, b;
-    cin >> a >> b;
+    int n;
+    cin >> n;
 
-    memset(dp, -1, sizeof(dp));
-    int ans1 = solve(a, b, 0, 0);
-    memset(dp, -1, sizeof(dp));
-    int ans2 = solve(b, a, 0, 0);
+    v(int) X(n), Y(n);
 
-    cout << min(ans1, ans2) << endl;
+    for (int &x : X)
+        cin >> x;
+    for (int &y : Y)
+        cin >> y;
+
+    set<int> x, y;
+
+    for (auto px : X)
+        x.insert(px);
+    for (auto py : Y)
+        y.insert(py);
+
+    int ans = INT32_MAX;
+    for (auto x_ : x)
+        for (auto y_ : y)
+            ans = min(ans, f(X, Y, x_, y_));
+
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
 
-    // w(T)
-    solve();
+    w(T)
+        solve();
 
     return 0;
 }

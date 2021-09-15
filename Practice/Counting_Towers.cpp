@@ -43,52 +43,45 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-const int N = 5000;
+const int N = 1e6;
+int dp[N + 1][2];
 
-int dp[N + 1][N + 1];
-
-int solve(string &a, string &b, int pos1, int pos2)
+int f(int h, int w)
 {
-    int m = a.length();
-    int n = b.length();
+    if (h == 0)
+        return 1ll;
 
-    if (dp[pos1][pos2] != -1)
-        return dp[pos1][pos2];
+    if (dp[h][w] != -1)
+        return dp[h][w];
 
-    if (pos1 == m)
-        return n - pos2;
-    else if (pos2 == n)
-        return m - pos1;
+    int ans = 0;
 
-    if (a[pos1] == b[pos2])
-        return solve(a, b, pos1 + 1, pos2 + 1);
+    if (w == 2)
+        for (int i = 1; i <= h; i++)
+            ans = (ans + (f(i, 1) * f(h - i, 2)) % mod) % mod;
 
-    int ans1 = solve(a, b, pos1 + 1, pos2);
-    int ans2 = solve(a, b, pos1, pos2 + 1);
-    int ans3 = solve(a, b, pos1 + 1, pos2 + 1);
+    for (int i = 1; i <= h; i++)
+        ans = (ans + f(h - i, w)) % mod;
 
-    return dp[pos1][pos2] = 1 + min({ans1, ans2, ans3});
+    return dp[h][w] = ans;
 }
 
 void solve()
 {
-    string a, b;
-    cin >> a >> b;
+    int n;
+    cin >> n;
 
     memset(dp, -1, sizeof(dp));
-    int ans1 = solve(a, b, 0, 0);
-    memset(dp, -1, sizeof(dp));
-    int ans2 = solve(b, a, 0, 0);
 
-    cout << min(ans1, ans2) << endl;
+    cout << f(n, 2) << endl;
 }
 
 int32_t main()
 {
     FastIO;
 
-    // w(T)
-    solve();
+    w(T)
+        solve();
 
     return 0;
 }

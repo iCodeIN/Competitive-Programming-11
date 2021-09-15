@@ -7,7 +7,7 @@
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 // #include <algorithm>
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
 // #include <map>
@@ -43,53 +43,61 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-const int N = 5000;
-
-int dp[N + 1][N + 1];
-
-int solve(string &a, string &b, int pos1, int pos2)
+int f(v(int) & dp, int prev, int i)
 {
-    int m = a.length();
-    int n = b.length();
+    if (prev == -1)
+        return 0;
 
-    if (dp[pos1][pos2] != -1)
-        return dp[pos1][pos2];
-
-    if (pos1 == m)
-        return n - pos2;
-    else if (pos2 == n)
-        return m - pos1;
-
-    if (a[pos1] == b[pos2])
-        return solve(a, b, pos1 + 1, pos2 + 1);
-
-    int ans1 = solve(a, b, pos1 + 1, pos2);
-    int ans2 = solve(a, b, pos1, pos2 + 1);
-    int ans3 = solve(a, b, pos1 + 1, pos2 + 1);
-
-    return dp[pos1][pos2] = 1 + min({ans1, ans2, ans3});
+    return (prev + 1 + dp[prev]) % mod;
 }
 
 void solve()
 {
-    string a, b;
-    cin >> a >> b;
+    int n;
+    cin >> n;
 
-    memset(dp, -1, sizeof(dp));
-    int ans1 = solve(a, b, 0, 0);
-    memset(dp, -1, sizeof(dp));
-    int ans2 = solve(b, a, 0, 0);
+    string s;
+    cin >> s;
 
-    cout << min(ans1, ans2) << endl;
+    v(int) dp(n);
+
+    int prev_x = -1;
+    int prev_o = -1;
+
+    for (int i = 0; i < n; i++)
+    {
+        switch (s[i])
+        {
+
+        case 'X':
+            dp[i] = f(dp, prev_o, i);
+            prev_x = i;
+            break;
+        case 'O':
+            dp[i] = f(dp, prev_x, i);
+            prev_o = i;
+            break;
+        case 'F':
+            dp[i] = (i > 0) ? dp[i - 1] : 0;
+        }
+    }
+
+    int ans = 0;
+
+    for (int i = 0; i < n; i++)
+        ans = (ans + dp[i]) % mod;
+
+    cout << ans << endl;
 }
-
 int32_t main()
 {
     FastIO;
-
-    // w(T)
-    solve();
-
+    int t = 0;
+    w(T)
+    {
+        cout << "Case #" << ++t << ": ";
+        solve();
+    }
     return 0;
 }
 

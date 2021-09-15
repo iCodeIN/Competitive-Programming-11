@@ -42,45 +42,81 @@ using namespace std;
 #define endl "\n"
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+const int N = 2 * 1e5 + 10;
 
-const int N = 5000;
+int dp[N + 1];
 
-int dp[N + 1][N + 1];
-
-int solve(string &a, string &b, int pos1, int pos2)
+struct node
 {
-    int m = a.length();
-    int n = b.length();
 
-    if (dp[pos1][pos2] != -1)
-        return dp[pos1][pos2];
+    int s;
+    int e;
+    int v;
 
-    if (pos1 == m)
-        return n - pos2;
-    else if (pos2 == n)
-        return m - pos1;
+    bool operator<(node b)
+    {
+        auto a = *this;
+        
+        return a.s < b.s;
+    }
+};
 
-    if (a[pos1] == b[pos2])
-        return solve(a, b, pos1 + 1, pos2 + 1);
+int justGreater(v(node) & A, int l, int x)
+{
 
-    int ans1 = solve(a, b, pos1 + 1, pos2);
-    int ans2 = solve(a, b, pos1, pos2 + 1);
-    int ans3 = solve(a, b, pos1 + 1, pos2 + 1);
+    // leftmost > x
 
-    return dp[pos1][pos2] = 1 + min({ans1, ans2, ans3});
+    int r = A.size();
+
+    while (r - l > 1)
+    {
+        int m = (l + r) >> 1;
+
+        if (A[m].s > x)
+            r = m;
+        else
+            l = m;
+    }
+
+    return r;
+}
+
+int solve(v(node) & A, int pos)
+{
+    int n = A.size();
+    if (pos == n)
+        return 0;
+
+    if (dp[pos] != -1)
+        return dp[pos];
+
+    int ans1 = solve(A, pos + 1);
+
+    int nextPos = justGreater(A, pos, A[pos].e);
+
+    int ans2 = A[pos].v + solve(A, nextPos);
+
+    return dp[pos] = max(ans1, ans2);
 }
 
 void solve()
 {
-    string a, b;
-    cin >> a >> b;
+    int n;
+    cin >> n;
+
+    v(node) A(n);
+
+    for (auto &x : A)
+        cin >> x.s >> x.e >> x.v;
+
+    sort(A.begin(), A.end());
+
 
     memset(dp, -1, sizeof(dp));
-    int ans1 = solve(a, b, 0, 0);
-    memset(dp, -1, sizeof(dp));
-    int ans2 = solve(b, a, 0, 0);
 
-    cout << min(ans1, ans2) << endl;
+    int ans = solve(A, 0);
+
+    cout << ans << endl;
 }
 
 int32_t main()
