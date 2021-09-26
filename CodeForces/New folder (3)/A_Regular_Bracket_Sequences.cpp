@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -41,20 +43,64 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
+int count = 0;
+string s = "";
+void solve(int open, int closed, int n)
+{
+
+    if (open == 0)
+    {
+        cout << s;
+        while (closed--)
+            cout << ')';
+        count++;
+        cout << endl;
+        return;
+    }
+
+    if (open >= closed)
+    {
+        if (count < n)
+        {
+            s.push_back('(');
+            solve(open - 1, closed, n);
+            s.pop_back();
+        }
+    }
+    else
+    {
+
+        if (count < n)
+        {
+            s.push_back('(');
+            solve(open - 1, closed, n);
+            s.pop_back();
+        }
+        if (count < n)
+        {
+            s.push_back(')');
+            solve(open, closed - 1, n);
+            s.pop_back();
+        }
+    }
+}
+
 void solve()
 {
-    
+    int n;
+    cin >> n;
+    count = 0;
+    s = "";
+    solve(n, n, n);
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 

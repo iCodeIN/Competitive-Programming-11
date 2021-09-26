@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -43,18 +45,24 @@ using namespace std;
 
 void solve()
 {
-    
+    string s;
+    cin >> s;
+
+    for (char x : s)
+    {
+        if ('a' <= x and x <= 'z')
+            x -= 32;
+        cout << x;
+    }
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
-        solve();
-    }
+
+    // w(T)
+    solve();
+
     return 0;
 }
 

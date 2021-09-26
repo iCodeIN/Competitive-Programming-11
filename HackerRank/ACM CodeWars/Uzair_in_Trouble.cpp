@@ -1,16 +1,18 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-// #include <algorithm>
+#include <algorithm>
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
 // #include <map>
 // #include <set>
-// #include <queue>
+#include <queue>
 // #include <stack>
 // #include <unordered_map>
 // #include <unordered_set>
@@ -41,20 +43,59 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
+struct node
+{
+    int s;
+    int e;
+
+    bool operator<(node b)
+    {
+        if (b.s != s)
+            return s < b.s;
+        return e < b.e;
+    }
+};
+
 void solve()
 {
-    
+    int n;
+    cin >> n;
+
+    v(node) A(n);
+
+    for (auto &x : A)
+        cin >> x.s >> x.e;
+
+    sort(all(A));
+
+    priority_queue<int, vector<int>, greater<int>> pq;
+
+    int ans = 1;
+    for (int i = 0; i < n; i++)
+    {
+
+        if (pq.size() == 0 or pq.top() > A[i].s)
+        {
+            pq.push(A[i].e);
+        }
+        else
+        {
+            pq.pop();
+            pq.push(A[i].e);
+        }
+        ans = max(ans, (int)pq.size());
+    }
+    ans--;
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
-        solve();
-    }
+
+    // w(T)
+    solve();
+
     return 0;
 }
 

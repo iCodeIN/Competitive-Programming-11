@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -41,20 +43,52 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
+int count(v(int) & A, int l, int r, int x)
+{
+    // leftmost >= x
+
+    int end = r;
+
+    while (r - l > 1)
+    {
+        int m = (l + r) >> 1;
+
+        if (A[m] >= x)
+            r = m;
+        else
+            l = m;
+    }
+
+    return end - r;
+}
+
 void solve()
 {
-    
+    int n, q;
+    cin >> n >> q;
+
+    v(int) A(n);
+
+    for (int &x : A)
+        cin >> x;
+
+    while (q--)
+    {
+        int l, r, x;
+        cin >> l >> r >> x;
+        l -= 2;
+        int ans = count(A, l, r, x);
+        cout << ans << endl;
+    }
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
-        solve();
-    }
+
+    // w(T)
+    solve();
+
     return 0;
 }
 

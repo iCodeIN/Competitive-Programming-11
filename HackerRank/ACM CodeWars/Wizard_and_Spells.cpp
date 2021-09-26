@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -8,7 +10,7 @@
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
-// #include <map>
+#include <map>
 // #include <set>
 // #include <queue>
 // #include <stack>
@@ -43,19 +45,58 @@ using namespace std;
 
 void solve()
 {
-    
+    int n, q;
+    cin >> n;
+
+    map<int, int> mp;
+
+    for (int i = 0; i < n; i++)
+    {
+        int l, r, x;
+        cin >> l >> r >> x;
+
+        mp[l] += x;
+        mp[r + 1] -= x;
+    }
+    int prev = 0;
+    for (auto &v : mp)
+    {
+        v.second += prev;
+        prev = v.second;
+    }
+
+    cin >> q;
+
+    while (q--)
+    {
+        int pos;
+
+        cin >> pos;
+
+        auto itr = mp.upper_bound(pos);
+
+        if (itr != mp.begin())
+        {
+            itr--;
+            cout << itr->second << endl;
+        }
+        else
+        {
+            cout << 0 << endl;
+        }
+    }
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
-        solve();
-    }
+
+    // w(T)
+    solve();
+
     return 0;
 }
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+
+

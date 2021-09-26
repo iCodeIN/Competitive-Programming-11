@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -43,18 +45,33 @@ using namespace std;
 
 void solve()
 {
-    
+
+    int score[3] = {0};
+    int Time[3] = {0};
+
+    for (int i = 0; i < 3; i++)
+        cin >> Time[i];
+
+    for (int i = 0; i < 3; i++)
+        cin >> score[i];
+
+    int ans = 0;
+    for (int i = 0; i <= 20; i++)
+        for (int j = 0; j <= 20; j++)
+            for (int k = 0; k <= 20; k++)
+                if (i * Time[0] + j * Time[1] + k * Time[2] <= 240)
+                    ans = max(ans, i * score[0] + j * score[1] + k * score[2]);
+
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 

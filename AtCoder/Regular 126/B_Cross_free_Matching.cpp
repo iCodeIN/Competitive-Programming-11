@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -8,7 +10,7 @@
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
-// #include <map>
+#include <map>
 // #include <set>
 // #include <queue>
 // #include <stack>
@@ -43,18 +45,32 @@ using namespace std;
 
 void solve()
 {
-    
+    int n, m;
+    cin >> n >> m;
+    map<int, int> mp;
+    int ans = 0;
+    while (m--)
+    {
+        int x1, x2;
+        cin >> x1 >> x2;
+
+        int Num = 1;
+        int Den = x2 - x1;
+
+        mp[Den]++;
+
+        ans = max(ans, mp[Den]);
+    }
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
+
+    // w(T)
         solve();
-    }
+
     return 0;
 }
 

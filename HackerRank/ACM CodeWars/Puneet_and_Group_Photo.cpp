@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -8,7 +10,7 @@
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
-// #include <map>
+#include <map>
 // #include <set>
 // #include <queue>
 // #include <stack>
@@ -43,18 +45,40 @@ using namespace std;
 
 void solve()
 {
-    
+    int n, x;
+    cin >> x >> n;
+    v(int) A(n);
+
+    for (int &v : A)
+        cin >> v;
+
+    for (int i = 1; i < n; i++)
+        A[i] += A[i - 1];
+
+    v(int) Idx(1e5 + 1, INT32_MAX);
+    Idx[0] = -1;
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+
+        int currentRem = A[i] % x;
+
+        if (Idx[currentRem] != INT32_MAX)
+            ans = max(i - Idx[currentRem], ans);
+
+        Idx[currentRem] = min(Idx[currentRem], i);
+    }
+
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
-        solve();
-    }
+
+    // w(T)
+    solve();
+
     return 0;
 }
 

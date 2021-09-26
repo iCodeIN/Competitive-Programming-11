@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -43,18 +45,31 @@ using namespace std;
 
 void solve()
 {
-    
+    v(int) A(7);
+
+    for (int &x : A)
+        cin >> x;
+
+    int c0 = 0, c1 = 0;
+
+    for (int x : A)
+        c0 += (x == 0), c1 += (x == 1);
+
+    if (c1 > c0)
+        cout << "YES";
+    else
+        cout << "NO";
+
+    cout << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 

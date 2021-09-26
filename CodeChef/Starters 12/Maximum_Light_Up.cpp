@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -43,18 +45,25 @@ using namespace std;
 
 void solve()
 {
-    
+    int p, a, b, c, x, y;
+    cin >> p >> a >> b >> c >> x >> y;
+
+    int cost1 = a * x + b;
+    int cost2 = a * y + c;
+
+    int ans1 = p / cost1;
+    int ans2 = p / cost2;
+
+    cout << max(ans1, ans2) << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 

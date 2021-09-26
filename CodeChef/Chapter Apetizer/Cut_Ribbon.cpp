@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -5,16 +7,16 @@
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 // #include <algorithm>
-// #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 // #include <cmath>
-#include <iostream>
+// #include <iostream>
 // #include <map>
 // #include <set>
 // #include <queue>
 // #include <stack>
 // #include <unordered_map>
 // #include <unordered_set>
-#include <vector>
+// #include <vector>
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
@@ -41,20 +43,48 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
+int dp[1001];
+
+int solve(int n, int cut)
+{
+
+    int &ans = dp[n];
+    
+    if (ans != -1)
+        return ans;
+
+    if (n & 1)
+        return 0;
+
+    if (n == 0)
+        return 1;
+
+    ans = 0;
+
+    for (int i = 2; i <= cut and i <= n; i += 2)
+        ans = (ans + solve(n - i, cut)) % mod;
+
+    return ans;
+}
+
 void solve()
 {
-    
+    int n, cut;
+    cin >> n >> cut;
+
+    memset(dp, -1, sizeof(dp));
+    int ans = solve(n, cut);
+
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 

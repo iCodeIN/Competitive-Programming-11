@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -5,7 +7,7 @@
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 // #include <algorithm>
-// #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
 // #include <map>
@@ -43,18 +45,39 @@ using namespace std;
 
 void solve()
 {
-    
+    v(int) A(3);
+    int m;
+    for (int i = 0; i < 3; i++)
+        cin >> A[i];
+    sort(all(A));
+
+    cin >> m;
+
+    int Max = 0;
+
+    for (int x : A)
+        Max += max(0ll, x - 1);
+
+    for (int &x : A)
+        x -= A[0];
+
+    int Min = max(A[2] - A[1] - 1, 0ll);
+
+    if (Min <= m and m <= Max and (Min % 2 == m % 2) or (Max % 2 == m % 2))
+        cout << "YES";
+    else
+        cout << "NO";
+
+    cout << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 

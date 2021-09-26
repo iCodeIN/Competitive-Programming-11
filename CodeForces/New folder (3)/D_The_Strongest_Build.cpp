@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -41,20 +43,53 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
+struct node
+{
+    v(int) * A;
+    int sum = 0;
+};
+
 void solve()
 {
-    
+    int n;
+    v(v(int)) A(n);
+
+    for (auto &v : A)
+    {
+
+        int s;
+        cin >> s;
+
+        v.resize(s);
+
+        for (int &x : v)
+            cin >> x;
+    }
+    int m;
+    cin >> m;
+
+    v(node) B(m);
+
+    for (auto &x : B)
+    {
+        int s = 0;
+
+        x.A = new v(int)(n);
+        for (int i = 0; i < n; i++)
+        {
+            cin >> A.at(i);
+            s += y;
+        }
+    }
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
-        solve();
-    }
+
+    // w(T)
+    solve();
+
     return 0;
 }
 

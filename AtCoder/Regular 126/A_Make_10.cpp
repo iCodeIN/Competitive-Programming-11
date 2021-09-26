@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -43,18 +45,70 @@ using namespace std;
 
 void solve()
 {
-    
+    int n2, n3, n4;
+    cin >> n2 >> n3 >> n4;
+
+    int ans = 0;
+
+    if (n3 > 0)
+    {
+        int cur = min(n3 / 2, n4);
+
+        n3 -= 2 * cur;
+        n4 -= cur;
+
+        ans += cur;
+    }
+
+    if (n4 > 0)
+    {
+        int cur = min(n4 / 2, n2);
+
+        n4 -= 2 * cur;
+        n2 -= cur;
+
+        ans += cur;
+    }
+
+    if (n3 > 0)
+    {
+
+        int cur = min(n3 / 2, n2 / 2);
+
+        n3 -= 2 * cur;
+        n2 -= 2 * cur;
+
+        ans += cur;
+    }
+
+    if (n4 > 0)
+    {
+        int cur = min(n2 / 3, n4);
+
+        n2 -= 3 * cur;
+        n4 -= cur;
+
+        ans += cur;
+    }
+
+    if (n2 > 0)
+    {
+        int cur = n2 / 5;
+        n2 -= cur * 5;
+        
+        ans += cur;
+    }
+
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 

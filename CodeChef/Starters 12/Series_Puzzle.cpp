@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -43,18 +45,26 @@ using namespace std;
 
 void solve()
 {
-    
+    v(int) A(6);
+    for (int &x : A)
+        cin >> x;
+
+    int ans = 0;
+
+    for (int x : A)
+        if (x & 1)
+            ans += x;
+
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
-        solve();
-    }
+
+    // w(T)
+    solve();
+
     return 0;
 }
 

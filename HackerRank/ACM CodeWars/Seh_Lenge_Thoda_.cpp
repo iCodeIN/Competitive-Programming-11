@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -43,18 +45,30 @@ using namespace std;
 
 void solve()
 {
-    
+    int n;
+    cin >> n;
+
+    v(int) A(n), B(n);
+
+    for (int &x : A)
+        cin >> x;
+
+    for (int &x : B)
+        cin >> x;
+
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+        ans += A[i] * B[i];
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
-        solve();
-    }
+
+    // w(T)
+    solve();
+
     return 0;
 }
 

@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -43,18 +45,45 @@ using namespace std;
 
 void solve()
 {
-    
+    int n;
+    cin >> n;
+
+    for (int i = n; i >= 1; i--)
+    {
+        for (int j = 1; j <= i; j++)
+            cout << "*";
+
+        for (int j = 1; j <= 2 * (n - i); j++)
+            cout << " ";
+
+        for (int j = 1; j <= i; j++)
+            cout << "*";
+
+        cout << endl;
+    }
+
+    for (int i = 2; i <= n; i++)
+    {
+        for (int j = 1; j <= i; j++)
+            cout << "*";
+
+        for (int j = 1; j <= 2 * (n - i); j++)
+            cout << " ";
+
+        for (int j = 1; j <= i; j++)
+            cout << "*";
+
+        cout << endl;
+    }
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
-        solve();
-    }
+
+    // w(T)
+    solve();
+
     return 0;
 }
 

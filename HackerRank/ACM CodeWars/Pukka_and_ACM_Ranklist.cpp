@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -36,25 +38,45 @@ using namespace std;
 #define all(x) x.begin(), x.end()
 
 #define int long long int
-#define mod 1000000007ll
+#define mod 998244353ll
 #define endl "\n"
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
+int f(int n)
+{
+
+    int ans = n * (n + 1);
+    ans >>= 1;
+    ans %= mod;
+    return ans;
+}
+
 void solve()
 {
-    
+    int n;
+    cin >> n;
+
+    v(int) A(n);
+
+    for (int &x : A)
+        cin >> x;
+
+    int ans = 1;
+
+    for (int x : A)
+        ans = (ans * f(x)) % mod;
+
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
-        solve();
-    }
+
+    // w(T)
+    solve();
+
     return 0;
 }
 

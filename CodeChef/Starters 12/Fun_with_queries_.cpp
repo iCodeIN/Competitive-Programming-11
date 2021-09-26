@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -41,20 +43,77 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
+unsigned int countSetBit(unsigned int n);
+
+unsigned int getLeftmostBit(int n)
+{
+    int m = 0;
+    while (n > 1)
+    {
+        n = n >> 1;
+        m++;
+    }
+    return m;
+}
+
+unsigned int getNextLeftmostBit(int n, int m)
+{
+    unsigned int temp = 1 << m;
+    while (n < temp)
+    {
+        temp = temp >> 1;
+        m--;
+    }
+    return m;
+}
+
+unsigned int _countSetBit(unsigned int n,
+                          int m)
+{
+
+    if (n == 0)
+        return 0;
+
+    m = getNextLeftmostBit(n, m);
+
+    if (n == ((unsigned int)1 << (m + 1)) - 1)
+        return (unsigned int)(m + 1) * (1 << m);
+
+    n = n - (1 << m);
+    return ((n + 1) + countSetBit(n) + m * (1 << (m - 1)));
+}
+
+unsigned int countSetBit(unsigned int n)
+{
+
+    int m = getLeftmostBit(n);
+
+    return _countSetBit(n, m);
+}
+
+int countSetBits(int L, int R)
+{
+    int a = countSetBit(R);
+    int b = countSetBit(L - 1);
+    return abs(a - b);
+}
+
 void solve()
 {
-    
+    int l, r;
+    cin >> l >> r;
+
+    int ans = countSetBits(l, r);
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 

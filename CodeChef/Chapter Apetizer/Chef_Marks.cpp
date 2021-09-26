@@ -1,10 +1,12 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-// #include <algorithm>
+#include <algorithm>
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
@@ -43,18 +45,23 @@ using namespace std;
 
 void solve()
 {
-    
+    v(int) A(3);
+
+    for (int &x : A)
+        cin >> x;
+
+    sort(all(A));
+
+    cout << A[1] << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
+
+    // w(T)
         solve();
-    }
+
     return 0;
 }
 

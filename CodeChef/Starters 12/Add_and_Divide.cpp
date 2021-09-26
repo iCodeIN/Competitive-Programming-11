@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -41,20 +43,48 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
+int gcd(int a, int b)
+{
+
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
+}
+
+bool check(int a, int b)
+{
+    swap(a, b);
+
+    while (gcd(a, b) != 1)
+        b /= gcd(a, b);
+
+    return b == 1;
+}
+
 void solve()
 {
-    
+    int a, b;
+    cin >> a >> b;
+
+    int g = gcd(a, b);
+
+    bool ans = check(a, b);
+
+    if (ans)
+        cout << "YES";
+    else
+        cout << "NO";
+
+    cout << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 

@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -43,18 +45,33 @@ using namespace std;
 
 void solve()
 {
-    
+    int n;
+    cin >> n;
+
+    int k;
+    cin >> k;
+
+    v(int) A(n);
+
+    for (int &x : A)
+        cin >> x;
+
+    int m = A[0];
+    int M = A[0];
+
+    for (int i = 1; i < n; i++)
+        m = min(m, A[i]), M = max(M, A[i]);
+
+    cout << M - m << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
-    w(T)
-    {
-        cout << "Case #" << test++ << ": ";
+
+    // w(T)
         solve();
-    }
+
     return 0;
 }
 

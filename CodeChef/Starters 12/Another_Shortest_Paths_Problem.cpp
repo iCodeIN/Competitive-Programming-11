@@ -5,7 +5,7 @@
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 // #include <algorithm>
-// #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
 // #include <map>
@@ -43,18 +43,31 @@ using namespace std;
 
 void solve()
 {
-    
+    int n, m, x, y;
+    cin >> n >> m >> x >> y;
+
+    int x_ = n - 1;
+    int y_ = m - 1;
+
+    int ans1 = (x_ + y_) * x;
+
+    int m_ = min(x_, y_);
+
+    int ans2 = (m_ * y) + ((x_ - m_ + y_ - m_) * x);
+
+    int d = x_ + y_ - 2 * m_;
+    int ans3 = (m_ * y) + (((d / 2) * 2) * y) + ((d % 2) * x);
+
+    cout << min({ans1, ans2, ans3}) << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 

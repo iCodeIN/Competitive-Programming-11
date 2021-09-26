@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -43,18 +45,41 @@ using namespace std;
 
 void solve()
 {
-    
+    string s;
+    cin >> s;
+
+    int state = 0;
+
+    int ans = 0;
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (state == 0)
+        {
+            if (s[i] == '0')
+            {
+                ans++;
+                state ^= 1;
+            }
+        }
+        else
+        {
+            if (s[i] == '1')
+            {
+                ans++;
+                state ^= 1;
+            }
+        }
+    }
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 

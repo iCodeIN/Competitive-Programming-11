@@ -1,3 +1,5 @@
+
+
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 /* author : pasricha_dhruv */
@@ -41,20 +43,51 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
+struct node
+{
+    int c0 = 0;
+    int c1 = 0;
+};
+
 void solve()
 {
-    
+    int n, k;
+
+    cin >> n >> k;
+
+    string s;
+    cin >> s;
+
+    int ans = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+
+        if (s[i] == '1')
+        {
+            if (i - k >= 0 and s[i - k] == '1')
+                continue;
+            else if (i + k < n and s[i + k] == '1')
+                continue;
+
+            ans++;
+            if (i + k < n)
+                s[i + k] = '1';
+            else
+                s[i] = '0';
+        }
+    }
+
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
-    int test = 1;
+
     w(T)
-    {
-        cout << "Case #" << test++ << ": ";
         solve();
-    }
+
     return 0;
 }
 
