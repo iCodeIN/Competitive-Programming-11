@@ -12,7 +12,7 @@
 #include <iostream>
 // #include <map>
 // #include <set>
-// #include <queue>
+#include <queue>
 // #include <stack>
 // #include <unordered_map>
 // #include <unordered_set>
@@ -43,34 +43,48 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-pair<int, int> bs(int n, int k)
-{
-    int f = 1;
-    int cur = 0;
-    int i = 0;
-    while (cur < n and f < k)
-    {
-        cur += f;
-        f <<= 1;
-        i++;
-    }
-    return {cur, i};
-}
-
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
-    n--;
-    auto x = bs(n, k);
+    int n;
+    cin >> n;
+    n = (1 << n);
+    priority_queue<int> pq1, pq2;
 
-    int rem = n - x.first;
-    int ans = x.second;
-    if (rem > 0)
+    int cur = 0;
+
+    for (int i = 0; i < n; i++)
     {
-        ans += (rem / k) + (rem % k != 0);
+        int x;
+        cin >> x;
+        pq1.push(x);
     }
-    cout << max(0ll, ans) << endl;
+
+    int size = n;
+
+    while (size > 1)
+    {
+
+        priority_queue<int> &pqCurrent = (cur == 0) ? pq1 : pq2;
+        priority_queue<int> &pqNext = (cur == 0) ? pq2 : pq1;
+
+        while (pqCurrent.size() >= 2)
+        {
+            int a = pqCurrent.top();
+            pqCurrent.pop();
+            int b = pqCurrent.top();
+            pqCurrent.pop();
+
+            if (abs(a - b) > 1)
+            {
+                cout << "NO\n";
+                return;
+            }
+            pqNext.push(a + b);
+        }
+        cur ^= 1;
+        size >>= 1;
+    }
+    cout << "YES\n";
 }
 
 int32_t main()

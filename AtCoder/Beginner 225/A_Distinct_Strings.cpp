@@ -11,7 +11,7 @@
 // #include <cmath>
 #include <iostream>
 // #include <map>
-// #include <set>
+#include <set>
 // #include <queue>
 // #include <stack>
 // #include <unordered_map>
@@ -43,42 +43,29 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-pair<int, int> bs(int n, int k)
-{
-    int f = 1;
-    int cur = 0;
-    int i = 0;
-    while (cur < n and f < k)
-    {
-        cur += f;
-        f <<= 1;
-        i++;
-    }
-    return {cur, i};
-}
-
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
-    n--;
-    auto x = bs(n, k);
+    string s;
+    cin >> s;
+    set<char> st;
+    for (char ch : s)
+        st.insert(ch);
 
-    int rem = n - x.first;
-    int ans = x.second;
-    if (rem > 0)
-    {
-        ans += (rem / k) + (rem % k != 0);
-    }
-    cout << max(0ll, ans) << endl;
+    int ans = 1;
+    if (st.size() == 2)
+        ans = 3;
+    else if (st.size() == 3)
+        ans = 6;
+
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
 
-    w(T)
-        solve();
+    // w(T)
+    solve();
 
     return 0;
 }

@@ -43,34 +43,16 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-pair<int, int> bs(int n, int k)
-{
-    int f = 1;
-    int cur = 0;
-    int i = 0;
-    while (cur < n and f < k)
-    {
-        cur += f;
-        f <<= 1;
-        i++;
-    }
-    return {cur, i};
-}
-
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
-    n--;
-    auto x = bs(n, k);
-
-    int rem = n - x.first;
-    int ans = x.second;
-    if (rem > 0)
-    {
-        ans += (rem / k) + (rem % k != 0);
-    }
-    cout << max(0ll, ans) << endl;
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++, cout << endl)
+        for (int j = 0; j < n; j++)
+            if (i == j and j != n - 3 and j != n - 1)
+                cout << "Q";
+            else
+                cout << ".";
 }
 
 int32_t main()

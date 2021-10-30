@@ -43,42 +43,40 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-pair<int, int> bs(int n, int k)
-{
-    int f = 1;
-    int cur = 0;
-    int i = 0;
-    while (cur < n and f < k)
-    {
-        cur += f;
-        f <<= 1;
-        i++;
-    }
-    return {cur, i};
-}
-
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
-    n--;
-    auto x = bs(n, k);
+    int n;
+    cin >> n;
 
-    int rem = n - x.first;
-    int ans = x.second;
-    if (rem > 0)
+    v(int) Adj[n + 1];
+
+    for (int i = 0; i < n - 1; i++)
     {
-        ans += (rem / k) + (rem % k != 0);
+        int u, v;
+        cin >> u >> v;
+        Adj[u].push_back(v);
+        Adj[v].push_back(u);
     }
-    cout << max(0ll, ans) << endl;
+    bool ans = false;
+
+    for (int i = 1; i <= n; i++)
+    {
+        ans |= ((int)Adj[i].size() == (n - 1));
+    }
+
+    if (ans)
+        cout << "Yes";
+    else
+        cout << "No";
+    cout << endl;
 }
 
 int32_t main()
 {
     FastIO;
 
-    w(T)
-        solve();
+    // w(T)
+    solve();
 
     return 0;
 }

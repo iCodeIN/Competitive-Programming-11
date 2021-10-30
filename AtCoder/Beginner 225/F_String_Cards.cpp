@@ -6,7 +6,7 @@
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-// #include <algorithm>
+#include <algorithm>
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
@@ -43,42 +43,40 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-pair<int, int> bs(int n, int k)
+bool comp(string a, string b)
 {
-    int f = 1;
-    int cur = 0;
-    int i = 0;
-    while (cur < n and f < k)
+    string a_ = a + b;
+    string b_ = b + a;
+    if (a_ == b_)
     {
-        cur += f;
-        f <<= 1;
-        i++;
+        if (a.size() <= b.size())
+            return true;
+        return false;
     }
-    return {cur, i};
+    return (a_) < (b_);
 }
 
 void solve()
 {
     int n, k;
     cin >> n >> k;
-    n--;
-    auto x = bs(n, k);
 
-    int rem = n - x.first;
-    int ans = x.second;
-    if (rem > 0)
-    {
-        ans += (rem / k) + (rem % k != 0);
-    }
-    cout << max(0ll, ans) << endl;
+    v(string) A(n);
+    for (auto &s : A)
+        cin >> s;
+
+    sort(all(A), comp);
+
+    for (int i = 0; i < k; i++)
+        cout << A[i];
 }
 
 int32_t main()
 {
     FastIO;
 
-    w(T)
-        solve();
+    // w(T)
+    solve();
 
     return 0;
 }
