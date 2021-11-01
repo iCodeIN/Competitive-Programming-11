@@ -43,28 +43,69 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-void solve(int *ptr)
+void update(int i, int val, v(int) A[], int n)
 {
-    cout << sizeof(ptr) << endl;
-    cout << ptr << endl;
-    cout << &ptr << endl;
+    A[n][i] = val;
+    i /= 2;
+    for (int level = n - 1; level >= 0; level--)
+    {
+        int lc = A[level + 1][2 * i];
+        int rc = A[level + 1][2 * i + 1];
+
+        bool or_ = (n - level) & 1;
+        if (or_)
+            A[level][i] = lc | rc;
+        else
+            A[level][i] = lc ^ rc;
+
+        i /= 2;
+    }
 }
 
 void solve()
 {
-    int A[10];
-    solve(A);
-    cout << sizeof(A) << endl;
-    cout << A << endl;
-    cout << &A << endl;
+    int n, q;
+    cin >> n >> q;
+
+    v(int) A[n + 1];
+
+    for (int i = 0; i <= n; i++)
+        A[i].resize(1 << i);
+
+    for (int &x : A[n])
+        cin >> x;
+
+    for (int level = n - 1; level >= 0; level--)
+    {
+        bool or_ = (n - level) & 1;
+        for (int i = 0; i < A[level].size(); i++)
+        {
+            int lc = A[level + 1][2 * i];
+            int rc = A[level + 1][2 * i + 1];
+
+            if (or_)
+                A[level][i] = lc | rc;
+            else
+                A[level][i] = lc ^ rc;
+        }
+    }
+
+    while (q--)
+    {
+        int idx, v;
+        cin >> idx >> v;
+        idx--;
+        update(idx, v, A, n);
+        cout << A[0][0] << endl;
+    }
 }
 
 int32_t main()
 {
     FastIO;
 
-    w(T)
-        solve();
+    // w(T)
+    solve();
 
     return 0;
 }

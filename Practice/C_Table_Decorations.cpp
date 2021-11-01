@@ -6,7 +6,7 @@
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-// #include <algorithm>
+#include <algorithm>
 // #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
@@ -43,30 +43,57 @@ using namespace std;
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
-void solve(int *ptr)
+int f(v(int) & A)
 {
-    cout << sizeof(ptr) << endl;
-    cout << ptr << endl;
-    cout << &ptr << endl;
 }
 
 void solve()
 {
-    int A[10];
-    solve(A);
-    cout << sizeof(A) << endl;
-    cout << A << endl;
-    cout << &A << endl;
+    v(int) A(3);
+    for (int &x : A)
+        cin >> x;
+    sort(all(A));
+    int ans1 = f(A);
+    int ans = A[0];
+
+    A[1] -= A[0];
+    A[2] -= A[0];
+    A[0] -= A[0];
+
+    int m = min(A[1], A[2] - A[1]);
+    ans += m;
+
+    A[1] -= m;
+    A[2] -= 2 * m;
+    if (A[1] > 0)
+    {
+        ans += 2 * (A[1] / 3);
+        ans += (A[1] % 3 == 2);
+    }
+
+    cout << ans << endl;
 }
 
 int32_t main()
 {
     FastIO;
 
-    w(T)
-        solve();
+    // w(T)
+    solve();
 
     return 0;
 }
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+
+/*
+
+    1 1 1 1 1 1 1 1 1 1 1
+    2 2 2    
+    3 3
+
+    1 1 1 1 1 
+    2 2 2 3 3  
+    1 1 1 1 1 1   
+  
+*/
