@@ -7,11 +7,11 @@
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 // #include <algorithm>
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
 // #include <map>
-// #include <set>
+#include <set>
 // #include <queue>
 // #include <stack>
 // #include <unordered_map>
@@ -42,61 +42,50 @@ using namespace std;
 #define endl "\n"
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
-bool good(int x, int a, int b, int c)
+
+int gcd(int a, int b)
 {
-    if (a < x)
-        return false;
+    if (b == 0)
+        return a;
 
-    int firstRow = x;
-    a -= x;
-    int secondRow = min(x, a);
-    a -= secondRow;
-    int req = x - secondRow;
-    if (req > 0)
-    {
-        int temp = min(req, b);
-        secondRow += temp;
-        req -= temp;
-        b -= temp;
-    }
-    if (req > 0)
-    {
-        int temp = min(req, c);
-        secondRow += temp;
-        req -= temp;
-        c -= temp;
-    }
-
-    return firstRow == x and secondRow == x and b + c >= x;
-}
-
-int solve(int a, int b, int c)
-{
-    int l = 0;
-    int r = 1e9 + 100;
-
-    while (r - l > 1)
-    {
-        int m = (l + r) >> 1;
-
-        if (good(m, a, b, c))
-            l = m;
-        else
-            r = m;
-    }
-    return l;
+    return gcd(b, a % b);
 }
 
 void solve()
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    int n;
+    cin >> n;
+    vector<pair<int, int>> A(n);
 
-    int M = max({a, b, c});
-    int m = min({a, b, c});
-    int mid = a ^ b ^ c ^ M ^ m;
-    int ans = solve(M, mid, m);
-    cout << ans << endl;
+    set<pair<int, int>> st;
+    for (auto &p : A)
+        cin >> p.first >> p.second;
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            if (i != j)
+            {
+                int a = abs(A[i].first - A[j].first);
+                int b = abs(A[i].second - A[j].second);
+
+                while (true)
+                {
+                    int g = gcd(a, b);
+                    a /= g;
+                    b /= g;
+                    if (g == 1)
+                        break;
+                }
+
+                if (A[i].first < A[j].first)
+                    a = -a;
+                if (A[i].second < A[j].second)
+                    b = -b;
+
+                st.insert({a, b});
+            }
+
+    cout << st.size() << endl;
 }
 
 int32_t main()

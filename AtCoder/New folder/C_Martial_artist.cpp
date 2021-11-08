@@ -7,7 +7,7 @@
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 
 // #include <algorithm>
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
 // #include <cmath>
 #include <iostream>
 // #include <map>
@@ -42,60 +42,42 @@ using namespace std;
 #define endl "\n"
 
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
-bool good(int x, int a, int b, int c)
+int dfs(int cur, v(bool) & visited, v(int) & T, v(v(int)) & A)
 {
-    if (a < x)
-        return false;
 
-    int firstRow = x;
-    a -= x;
-    int secondRow = min(x, a);
-    a -= secondRow;
-    int req = x - secondRow;
-    if (req > 0)
-    {
-        int temp = min(req, b);
-        secondRow += temp;
-        req -= temp;
-        b -= temp;
-    }
-    if (req > 0)
-    {
-        int temp = min(req, c);
-        secondRow += temp;
-        req -= temp;
-        c -= temp;
-    }
+    visited[cur] = true;
 
-    return firstRow == x and secondRow == x and b + c >= x;
-}
+    int ans = T[cur - 1];
 
-int solve(int a, int b, int c)
-{
-    int l = 0;
-    int r = 1e9 + 100;
+    for (int x : A[cur - 1])
+        if (!visited[x])
+            ans += dfs(x, visited, T, A);
 
-    while (r - l > 1)
-    {
-        int m = (l + r) >> 1;
-
-        if (good(m, a, b, c))
-            l = m;
-        else
-            r = m;
-    }
-    return l;
+    return ans;
 }
 
 void solve()
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    int n;
+    cin >> n;
 
-    int M = max({a, b, c});
-    int m = min({a, b, c});
-    int mid = a ^ b ^ c ^ M ^ m;
-    int ans = solve(M, mid, m);
+    v(bool) visited(n + 1, false);
+
+    v(v(int)) A(n);
+
+    v(int) T(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> T[i];
+        int size;
+        cin >> size;
+        A[i].resize(size);
+        for (int &x : A[i])
+            cin >> x;
+    }
+
+    int ans = dfs(n, visited, T, A);
+
     cout << ans << endl;
 }
 
@@ -104,7 +86,7 @@ int32_t main()
     FastIO;
 
     // w(T)
-    solve();
+        solve();
 
     return 0;
 }
