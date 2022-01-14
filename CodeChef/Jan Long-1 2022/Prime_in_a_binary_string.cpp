@@ -4,11 +4,11 @@
 #include <bits/stdc++.h>
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 using namespace std;
-using LL = long long unsigned int;
+using LL = long long int;
 using LD = long double;
 using vi = vector<LL>;
 using pii = pair<LL, LL>;
-const LL mod = INT64_MAX;
+const LL mod = 1e9 + 7;
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 #define all(x) x.begin(), x.end()
 #define double LD
@@ -18,35 +18,31 @@ const LL mod = INT64_MAX;
 #define ss second
 #define v vector
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+bool check(string &s, string p)
+{
+    int n = s.size();
+
+    for (int i = 0; i < n; i++)
+        if (s.substr(i, 2) == p)
+            return true;
+
+    return false;
+}
+
 void solve()
 {
-    int n, k, x;
-    cin >> n >> k >> x;
-
     string s;
     cin >> s;
 
-    v<int> A;
-    for (int i = 0; i < n; i++)
-    {
-        if (s[i] == 'a')
-            A.push_back(INT64_MAX);
-        else
-        {
-            int j = i;
-            int c = 0;
-            while (j < n and s[j] == '*')
-                c++, j++;
-            A.push_back(c * k);
-            i = j - 1;
-        }
-    }
-    n = A.size();
-    int current = 1;
-    for (int i = n - 1; i >= 0; i--)
-    {
-        
-    }
+    bool ans = check(s, "10");
+    ans |= check(s, "11");
+
+    if (ans)
+        cout << "Yes";
+    else
+        cout << "No";
+
+    cout << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()

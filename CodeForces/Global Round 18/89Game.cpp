@@ -3,10 +3,10 @@ using namespace std;
 
 class Solution
 {
-
 private:
     string sequence;
     string *allPossibleOutcomes;
+    int size;
 
     void generate(int position, int remaining_8, int remaining_9)
     {
@@ -31,7 +31,6 @@ private:
     }
 
 public:
-    int size;
     Solution(int n, string *allPossibleOutcomes)
     {
         this->allPossibleOutcomes = allPossibleOutcomes;
@@ -41,17 +40,21 @@ public:
     }
 };
 
-int main()
+// Read only Refion starts
+struct Result
 {
-    int n;
-    cin >> n;
+    string *output1;
+};
 
-    string *str = new string[1500];
-
-    Solution x(n / 2, str);
-
-    cout << x.size << endl;
-
-    for (int i = 0; i < 1500; i++)
-        cout << str[i] << endl;
+struct Result Play(int input1)
+{
+    // Read only Region ends
+    Result ans;
+    ans.output1 = new string[100];
+    if (input1 % 2 == 0)
+    {
+        int n = input1 / 2;
+        Solution(n, ans.output1);
+    }
+    return ans;
 }

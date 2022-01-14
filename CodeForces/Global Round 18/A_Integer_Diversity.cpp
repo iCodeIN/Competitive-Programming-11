@@ -18,60 +18,30 @@ const LL mod = 1e9 + 7;
 #define ss second
 #define v vector
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
-bool exists(uint_fast64_t l, uint_fast64_t r, uint_fast64_t a, uint_fast64_t b)
-{
-    uint_fast64_t mn = a;
-    uint_fast64_t n = b - a + 1;
-    uint_fast64_t mx = (n % 2 == 0) ? (n / 2) * (a + b) : n * ((a + b) / 2);
-    // cout << mn << " " << mx << endl;
-    // return mn <= l and r <= mx;
-    if (r < mn or l > mx)
-        return false;
-    return true;
-}
 void solve()
 {
     int n;
     cin >> n;
-    int a, b;
-    cin >> a >> b;
-    v<pii> A(n);
+
+    v<int> A(n);
     int ans = 0;
 
     for (int i = 0; i < n; i++)
-        cin >> A[i].ff >> A[i].ss;
-
+        cin >> A[i];
     map<int, int> mp;
+    for (int x : A)
+        mp[abs(x)]++;
 
-    for (auto &p : A)
+    for (auto itr : mp)
     {
-        mp[p.ff]++;
-        mp[p.ss + 1]--;
-    }
-
-    int prev = 0;
-
-    for (auto &itr : mp)
-    {
-        itr.second += prev;
-        prev = itr.second;
-    }
-
-    auto itr = mp.begin();
-    auto next = itr;
-
-    while (itr != mp.end())
-    {
-        next = itr;
-        next++;
-        if (next == mp.end())
-            break;
-        int l = itr->first;
-        int r = next->first - 1;
-        if (exists(l, r, a, b))
-            ans = max(ans, itr->second);
-        // cout << l << " " << r << ": " << itr->second << endl;
-        itr++;
+        if (itr.first > 0)
+        {
+            ans += min(2ll, itr.second);
+        }
+        else
+        {
+            ans++;
+        }
     }
 
     cout << ans << endl;
@@ -90,10 +60,3 @@ int32_t main()
     return 0;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
-
-
- // A[j] - A[i] = j - i
-
-//  A[j] - j == A[i] - i
-
-

@@ -4,11 +4,11 @@
 #include <bits/stdc++.h>
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 using namespace std;
-using LL = long long unsigned int;
+using LL = long long int;
 using LD = long double;
 using vi = vector<LL>;
 using pii = pair<LL, LL>;
-const LL mod = INT64_MAX;
+const LL mod = 1e9 + 7;
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 #define all(x) x.begin(), x.end()
 #define double LD
@@ -18,35 +18,48 @@ const LL mod = INT64_MAX;
 #define ss second
 #define v vector
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+void f(v<int> &A)
+{
+    int i = 0;
+    int j = 0;
+    v<int> B = A;
+    int n = A.size();
+    while (j < n)
+    {
+        B[i] = A[j];
+        i++;
+        j += 2;
+    }
+
+    j = 1;
+
+    while (j < n)
+    {
+        B[i] = A[j];
+        i++;
+        j += 2;
+    }
+    A = B;
+}
+
 void solve()
 {
-    int n, k, x;
-    cin >> n >> k >> x;
+    int n;
+    cin >> n;
 
-    string s;
-    cin >> s;
+    int k;
+    cin >> k;
+    v<int> A(n);
+    for (int i = 1; i <= n; i++)
+        A[i - 1] = i;
 
-    v<int> A;
-    for (int i = 0; i < n; i++)
-    {
-        if (s[i] == 'a')
-            A.push_back(INT64_MAX);
-        else
-        {
-            int j = i;
-            int c = 0;
-            while (j < n and s[j] == '*')
-                c++, j++;
-            A.push_back(c * k);
-            i = j - 1;
-        }
-    }
-    n = A.size();
-    int current = 1;
-    for (int i = n - 1; i >= 0; i--)
-    {
-        
-    }
+    int op = log2(n);
+    k %= op;
+    while (k--)
+        f(A);
+    for (int &x : A)
+        cout << x << " ";
+    cout << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()

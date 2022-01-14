@@ -4,11 +4,11 @@
 #include <bits/stdc++.h>
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 using namespace std;
-using LL = long long unsigned int;
+using LL = long long int;
 using LD = long double;
 using vi = vector<LL>;
 using pii = pair<LL, LL>;
-const LL mod = INT64_MAX;
+const LL mod = 1e9 + 7;
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 #define all(x) x.begin(), x.end()
 #define double LD
@@ -20,33 +20,52 @@ const LL mod = INT64_MAX;
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 void solve()
 {
-    int n, k, x;
-    cin >> n >> k >> x;
-
+    string a;
     string s;
-    cin >> s;
+    cin >> a >> s;
 
-    v<int> A;
-    for (int i = 0; i < n; i++)
+    int n1 = a.size();
+    int n2 = s.size();
+    int i = n1 - 1;
+    int j = n2 - 1;
+    string ans = "";
+    while (i >= 0 and j >= 0)
     {
-        if (s[i] == 'a')
-            A.push_back(INT64_MAX);
+        int sumDigit = s[j] - '0';
+        int numDigit = a[i] - '0';
+
+        if (numDigit <= sumDigit)
+        {
+            ans = to_string(sumDigit - numDigit) + ans;
+        }
+        else if (j > 0)
+        {
+            j--;
+            sumDigit += 10 * (s[j] - '0');
+            if (sumDigit - numDigit > 9 or sumDigit - numDigit < 0)
+            {
+                ans = "-1";
+                break;
+            }
+            else
+            {
+                ans = to_string(sumDigit - numDigit) + ans;
+            }
+        }
         else
         {
-            int j = i;
-            int c = 0;
-            while (j < n and s[j] == '*')
-                c++, j++;
-            A.push_back(c * k);
-            i = j - 1;
+            ans = "-1";
+            break;
         }
+        i--;
+        j--;
     }
-    n = A.size();
-    int current = 1;
-    for (int i = n - 1; i >= 0; i--)
-    {
-        
-    }
+    if (i == -1)
+        ans = s.substr(0, j + 1) + ans;
+    else
+        ans = "-1";
+
+    cout << stoll(ans) << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()

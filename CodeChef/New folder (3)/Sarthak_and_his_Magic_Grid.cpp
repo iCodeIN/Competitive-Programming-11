@@ -4,11 +4,11 @@
 #include <bits/stdc++.h>
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 using namespace std;
-using LL = long long unsigned int;
+using LL = long long int;
 using LD = long double;
 using vi = vector<LL>;
 using pii = pair<LL, LL>;
-const LL mod = INT64_MAX;
+const LL mod = 1e9 + 7;
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 #define all(x) x.begin(), x.end()
 #define double LD
@@ -20,33 +20,12 @@ const LL mod = INT64_MAX;
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 void solve()
 {
-    int n, k, x;
-    cin >> n >> k >> x;
+    int n;
+    cin >> n;
 
-    string s;
-    cin >> s;
-
-    v<int> A;
-    for (int i = 0; i < n; i++)
-    {
-        if (s[i] == 'a')
-            A.push_back(INT64_MAX);
-        else
-        {
-            int j = i;
-            int c = 0;
-            while (j < n and s[j] == '*')
-                c++, j++;
-            A.push_back(c * k);
-            i = j - 1;
-        }
-    }
-    n = A.size();
-    int current = 1;
-    for (int i = n - 1; i >= 0; i--)
-    {
-        
-    }
+    for (int i = 0; i < n; i++, cout << endl)
+        for (int j = 0; j < n; j++)
+            cout << 1 << " ";
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()
