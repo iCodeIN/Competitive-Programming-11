@@ -20,36 +20,28 @@ const LL mod = 1e9 + 7;
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 void solve()
 {
+    int x;
+    cin >> x;
     int n;
     cin >> n;
-    int k, x;
-    cin >> k >> x;
+    int b;
+    cin >> b;
+    swap(x, b);
+    v<int> A(n);
+    for (int i = 0; i < n; i++)
+        cin >> A[i];
 
-    if (x > k)
-        cout << -1;
-    else
+    sort(all(A));
+    int ans = 0;
+    b -= x;
+    int i = 0;
+    while (i < n and A[i] <= b)
     {
-        v<int> A(k);
-        int j = 0;
-        bool ok = true;
-        for (int i = 0; i < k; i++)
-        {
-            if (j == x)
-            {
-                j++;
-                i--;
-                continue;
-            }
-            A[i] = j++;
-        }
-        int i = 0;
-        while (i < n)
-        {
-            cout << A[i % k] << " ";
-            i++;
-        }
+        ans++;
+        b -= A[i];
+        i++;
     }
-    cout << endl;
+    cout << ans << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()

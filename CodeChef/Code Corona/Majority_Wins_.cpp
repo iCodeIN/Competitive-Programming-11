@@ -22,41 +22,34 @@ void solve()
 {
     int n;
     cin >> n;
-    int k, x;
-    cin >> k >> x;
 
-    if (x > k)
-        cout << -1;
-    else
+    v<int> A(n);
+    int ans = 0;
+
+    for (int i = 0; i < n; i++)
+        cin >> A[i];
+
+    map<int, int> mp;
+    for (int x : A)
+        mp[x]++;
+
+    for (auto it : mp)
     {
-        v<int> A(k);
-        int j = 0;
-        bool ok = true;
-        for (int i = 0; i < k; i++)
+        if (2 * it.second > n)
         {
-            if (j == x)
-            {
-                j++;
-                i--;
-                continue;
-            }
-            A[i] = j++;
-        }
-        int i = 0;
-        while (i < n)
-        {
-            cout << A[i % k] << " ";
-            i++;
+            cout << it.first << endl;
+            return;
         }
     }
-    cout << endl;
+
+    cout << "NOTA" << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()
 {
     cin.tie(nullptr)->sync_with_stdio(false);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     for (int i = 1; i <= t; i++)
     {
         // cout << "Case #" << i << ": ";

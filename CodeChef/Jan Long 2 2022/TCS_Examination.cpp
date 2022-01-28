@@ -18,37 +18,53 @@ const LL mod = 1e9 + 7;
 #define ss second
 #define v vector
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+struct marks
+{
+    int dsa, toc, dm;
+
+    void input()
+    {
+        cin >> dsa >> toc >> dm;
+    }
+
+    bool operator==(const marks &b)
+    {
+        return dsa == b.dsa and toc == b.toc and dm == b.dm;
+    }
+
+    bool operator>(const marks &b)
+    {
+        if (dsa + toc + dm < b.dsa + b.toc + b.dm)
+            return false;
+
+        if (dsa + toc + dm > b.dsa + b.toc + b.dm)
+            return true;
+
+        if (dsa < b.dsa)
+            return false;
+
+        if (dsa > b.dsa)
+            return true;
+
+        return toc > b.toc;
+    }
+};
+
 void solve()
 {
-    int n;
-    cin >> n;
-    int k, x;
-    cin >> k >> x;
+    marks d;
+    marks s;
 
-    if (x > k)
-        cout << -1;
+    d.input();
+    s.input();
+
+    if (d > s)
+        cout << "DRAGON";
+    else if (d == s)
+        cout << "TIE";
     else
-    {
-        v<int> A(k);
-        int j = 0;
-        bool ok = true;
-        for (int i = 0; i < k; i++)
-        {
-            if (j == x)
-            {
-                j++;
-                i--;
-                continue;
-            }
-            A[i] = j++;
-        }
-        int i = 0;
-        while (i < n)
-        {
-            cout << A[i % k] << " ";
-            i++;
-        }
-    }
+        cout << "SLOTH";
+
     cout << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //

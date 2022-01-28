@@ -14,42 +14,50 @@ const LL mod = 1e9 + 7;
 #define double LD
 #define endl "\n"
 #define ff first
-#define int LL
+// #define int LL
 #define ss second
 #define v vector
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+int dp[1001];
+int solve(v<int> &A, int pos, int k)
+{
+    if (pos + 1 == A.size())
+        return 0;
+
+    if (pos >= A.size())
+        return INT_MAX;
+
+    int &ans = dp[pos];
+    if (ans != -1)
+        return ans;
+    ans = INT_MAX;
+    int n = A.size();
+    for (int i = 1; i <= k and pos + i < n; i++)
+    {
+        int cur = solve(A, pos + i, k);
+        if (cur != INT_MAX)
+            cur += abs(A[pos] - A[pos + i]);
+        ans = min(ans, cur);
+    }
+    return ans;
+}
 void solve()
 {
     int n;
     cin >> n;
-    int k, x;
-    cin >> k >> x;
+    int k;
+    cin >> k;
 
-    if (x > k)
-        cout << -1;
-    else
-    {
-        v<int> A(k);
-        int j = 0;
-        bool ok = true;
-        for (int i = 0; i < k; i++)
-        {
-            if (j == x)
-            {
-                j++;
-                i--;
-                continue;
-            }
-            A[i] = j++;
-        }
-        int i = 0;
-        while (i < n)
-        {
-            cout << A[i % k] << " ";
-            i++;
-        }
-    }
-    cout << endl;
+    v<int> A(n);
+
+    for (int i = 0; i < n; i++)
+        cin >> A[i];
+
+    for (int i = 0; i < n; i++)
+        dp[i] = -1;
+
+    int ans = solve(A, 0, k);
+    cout << ans << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()

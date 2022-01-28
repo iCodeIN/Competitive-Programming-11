@@ -18,37 +18,26 @@ const LL mod = 1e9 + 7;
 #define ss second
 #define v vector
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+v<int> A(1000);
+
+int bitCount(int x)
+{
+    int ans = 0;
+    while (x)
+    {
+        ans += (x & 1);
+        x >>= 1;
+    }
+    return ans;
+}
 void solve()
 {
     int n;
     cin >> n;
-    int k, x;
-    cin >> k >> x;
 
-    if (x > k)
-        cout << -1;
-    else
-    {
-        v<int> A(k);
-        int j = 0;
-        bool ok = true;
-        for (int i = 0; i < k; i++)
-        {
-            if (j == x)
-            {
-                j++;
-                i--;
-                continue;
-            }
-            A[i] = j++;
-        }
-        int i = 0;
-        while (i < n)
-        {
-            cout << A[i % k] << " ";
-            i++;
-        }
-    }
+    for (int i = 0; i < n; i++)
+        cout << A[i] << " ";
+
     cout << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
@@ -57,6 +46,18 @@ int32_t main()
     cin.tie(nullptr)->sync_with_stdio(false);
     int t = 1;
     cin >> t;
+
+    int num = 0;
+    int pos = 0;
+
+    while (pos != 1000)
+    {
+        int c = bitCount(num);
+        if (c % 2 == 0)
+            A[pos++] = num;
+        num++;
+    }
+
     for (int i = 1; i <= t; i++)
     {
         // cout << "Case #" << i << ": ";

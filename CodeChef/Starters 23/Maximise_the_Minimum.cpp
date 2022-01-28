@@ -49,6 +49,37 @@ public:
     }
 };
 
+void filter(v<pii> &A)
+{
+    int n = A.size();
+    if (n == 0)
+        return;
+    sort(all(A));
+    v<int> suf(n);
+    suf[n - 1] = n - 1;
+
+    for (int i = n - 2; i >= 0; i--)
+    {
+        if (A[i].ss > A[suf[i + 1]].ss)
+        {
+            suf[i] = i;
+        }
+        else
+        {
+            suf[i] = suf[i + 1];
+        }
+    }
+    v<pii> temp;
+    for (int i = 0; i < n; i++)
+    {
+        if (suf[i] != i and A[i].ss <= A[suf[i]].ss)
+            continue;
+        else
+            temp.push_back(A[i]);
+    }
+    A = temp;
+}
+
 int lb(v<pii> &cur, int f)
 {
     int l = -1;
@@ -90,10 +121,25 @@ void solve()
 
     for (int i = 0; i <= k; i++)
     {
+        filter(left.mp[i]);
+        filter(right.mp[i]);
+    }
+
+    for (int i = 0; i <= k; i++)
+    {
         auto &cur = right.mp[i];
+        auto &leftcur = left.mp[k - i];
+        bool swapped = false;
+
+        if (leftcur.size() > cur.size())
+        {
+            swap(cur, leftcur);
+            swapped = true;
+        }
         sort(all(cur));
 
         int n = cur.size();
+
         if (n == 0)
             continue;
 
@@ -106,7 +152,6 @@ void solve()
                 suf[j] = suf[j + 1];
 
         //
-        auto &leftcur = left.mp[k - i];
         for (auto &itr : leftcur)
         {
             int l = ans;
@@ -133,6 +178,8 @@ void solve()
                     r = m;
             }
         }
+        if (swapped)
+            swap(cur, leftcur);
     }
 
     cout << ans << endl;

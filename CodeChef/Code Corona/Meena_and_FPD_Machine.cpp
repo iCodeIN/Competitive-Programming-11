@@ -20,36 +20,35 @@ const LL mod = 1e9 + 7;
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 void solve()
 {
-    int n;
-    cin >> n;
-    int k, x;
-    cin >> k >> x;
-
-    if (x > k)
-        cout << -1;
-    else
+    int n, k;
+    cin >> n >> k;
+    vector<int> a(n + 1);
+    for (int i = 1; i <= n; i++)
     {
-        v<int> A(k);
-        int j = 0;
-        bool ok = true;
-        for (int i = 0; i < k; i++)
-        {
-            if (j == x)
-            {
-                j++;
-                i--;
-                continue;
-            }
-            A[i] = j++;
-        }
-        int i = 0;
-        while (i < n)
-        {
-            cout << A[i % k] << " ";
-            i++;
-        }
+        cin >> a[i];
     }
-    cout << endl;
+    int cnt = 0;
+    if (a[k])
+        cnt++;
+    int i = k - 1, j = k + 1;
+    while (i > 0 || j <= n)
+    {
+        if (i > 0 && j <= n)
+        {
+            if (a[i] + a[j] == 2)
+                cnt += 2;
+        }
+        else
+        {
+            if (i > 0 && a[i])
+                cnt++;
+            if (j <= n && a[j])
+                cnt++;
+        }
+        i--;
+        j++;
+    }
+    cout << cnt << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()

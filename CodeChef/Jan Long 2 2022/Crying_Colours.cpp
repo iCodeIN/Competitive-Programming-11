@@ -22,34 +22,38 @@ void solve()
 {
     int n;
     cin >> n;
-    int k, x;
-    cin >> k >> x;
 
-    if (x > k)
-        cout << -1;
-    else
+    v<v<int>> A(3, v<int>(3));
+    int ans = 0;
+
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            cin >> A[i][j];
+
+    while (true)
     {
-        v<int> A(k);
-        int j = 0;
-        bool ok = true;
-        for (int i = 0; i < k; i++)
+        int prev = ans;
+        pii vec[3] = {{0, 1}, {0, 2}, {1, 2}};
+        for (int itr = 0; itr < 3; itr++)
         {
-            if (j == x)
-            {
-                j++;
-                i--;
-                continue;
-            }
-            A[i] = j++;
+            int i = vec[itr].ff;
+            int j = vec[itr].ss;
+            int x = min(A[i][j], A[j][i]);
+            ans += x;
+            A[i][j] -= x;
+            A[j][i] -= x;
         }
-        int i = 0;
-        while (i < n)
-        {
-            cout << A[i % k] << " ";
-            i++;
-        }
+        if (prev == ans)
+            break;
+        prev = ans;
     }
-    cout << endl;
+
+    if (A[0][0] != n and A[1][1] != n and A[2][2] != n)
+    {
+        // 0 
+
+    }
+    cout << ans << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()

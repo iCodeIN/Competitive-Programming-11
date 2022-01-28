@@ -22,34 +22,28 @@ void solve()
 {
     int n;
     cin >> n;
-    int k, x;
-    cin >> k >> x;
 
-    if (x > k)
-        cout << -1;
-    else
+    int x;
+    cin >> x;
+
+    v<int> A(n);
+    int ans = 0;
+
+    for (int i = 0; i < n; i++)
+        cin >> A[i];
+
+    sort(all(A));
+    reverse(all(A));
+    int i = 0;
+
+    while (x > 0 and i < n)
     {
-        v<int> A(k);
-        int j = 0;
-        bool ok = true;
-        for (int i = 0; i < k; i++)
-        {
-            if (j == x)
-            {
-                j++;
-                i--;
-                continue;
-            }
-            A[i] = j++;
-        }
-        int i = 0;
-        while (i < n)
-        {
-            cout << A[i % k] << " ";
-            i++;
-        }
+        x -= A[i];
+        i++;
+        ans++;
     }
-    cout << endl;
+
+    cout << ((x > 0) ? -1 : ans) << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()

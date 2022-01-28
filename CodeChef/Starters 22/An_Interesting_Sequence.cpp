@@ -20,36 +20,19 @@ const LL mod = 1e9 + 7;
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 void solve()
 {
-    int n;
-    cin >> n;
-    int k, x;
-    cin >> k >> x;
+    int k;
+    cin >> k;
 
-    if (x > k)
-        cout << -1;
-    else
+    int p = 0;
+    int ans = 0;
+
+    while ((k - p) % 2 == 0)
     {
-        v<int> A(k);
-        int j = 0;
-        bool ok = true;
-        for (int i = 0; i < k; i++)
-        {
-            if (j == x)
-            {
-                j++;
-                i--;
-                continue;
-            }
-            A[i] = j++;
-        }
-        int i = 0;
-        while (i < n)
-        {
-            cout << A[i % k] << " ";
-            i++;
-        }
+        ans++;
+        p += ((k - p) / 2);
     }
-    cout << endl;
+
+    cout << ans << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()
@@ -65,3 +48,10 @@ int32_t main()
     return 0;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+
+// sorting -> twoPointer O(NlogN) O(dependent on sorting used)
+// Hashmap : O(N) O(N)
+
+// three sum -> O(n*n) sorting + twoPointer
+// O(dependent on sorting used)
+

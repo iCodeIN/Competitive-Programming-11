@@ -20,36 +20,19 @@ const LL mod = 1e9 + 7;
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 void solve()
 {
-    int n;
-    cin >> n;
-    int k, x;
-    cin >> k >> x;
+    int a, b, c;
+    cin >> a >> b >> c;
 
-    if (x > k)
-        cout << -1;
-    else
-    {
-        v<int> A(k);
-        int j = 0;
-        bool ok = true;
-        for (int i = 0; i < k; i++)
-        {
-            if (j == x)
-            {
-                j++;
-                i--;
-                continue;
-            }
-            A[i] = j++;
-        }
-        int i = 0;
-        while (i < n)
-        {
-            cout << A[i % k] << " ";
-            i++;
-        }
-    }
-    cout << endl;
+    string ans = "NOTA";
+
+    if (a > 50)
+        ans = "A";
+    else if (b > 50)
+        ans = "B";
+    else if (c > 50)
+        ans = "C";
+
+    cout << ans << endl;
 }
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()
