@@ -1,61 +1,67 @@
+// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+/* author : pasricha_dhruv */
+// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
-#define fastio cin.tie(nullptr)->sync_with_stdio(false)
-#define ll long long
-#define endl "\n"
-
+// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 using namespace std;
-
-ll divSum(int n)
+using LL = long long int;
+using LD = long double;
+// using vi = vector<LL>;
+using pii = pair<LL, LL>;
+const LL mod = 1e9 + 7;
+// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+#define all(x) x.begin(), x.end()
+#define double LD
+#define endl "\n"
+#define ff first
+// #define int LL
+#define ss second
+#define v vector
+// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
+bool ok(int n, int x)
 {
-    if (n == 1)
-        return 1;
-
-    ll result = 0;
-    int f = sqrt(n);
-    for (int i = 2; i <= f; i++)
+    for (int i = 1; i * i <= n; i++)
     {
         if (n % i == 0)
         {
-            if (i == (n / i))
-                result += i;
-            else
-                result += (i + n / i);
+            x -= i;
+            if (n != i * i)
+                x -= (n / i);
         }
+        if (x < 0)
+            return false;
     }
-    return (result + n + 1);
+    return x == 0;
 }
 
+void solve()
+{
+    LL x, a, b;
+    cin >> x >> a >> b;
+
+    LL num = b * x;
+    LL ans = -1;
+
+    if (num % a == 0)
+    {
+        ans = num / a;
+        if (not ok(ans, x))
+            ans = -1;
+    }
+
+    cout << ans << endl;
+}
+// // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()
 {
-    fastio;
+    cin.tie(nullptr)->sync_with_stdio(false);
     int t = 1;
-    // Uncomment for multiple test cases
     cin >> t;
-    while (t--)
+    for (int i = 1; i <= t; i++)
     {
-        // Code here
-        ll x, a, b;
-        cin >> x >> a >> b;
-
-        ll temp = b * x;
-
-        if (temp % a != 0)
-        {
-            cout << "-1" << endl;
-        }
-
-        else
-        {
-            ll n = temp / a;
-            if (divSum(n) == x)
-            {
-                cout << n << endl;
-            }
-            else
-                cout << "-1" << endl;
-        }
+        // cout << "Case #" << i << ": ";
+        solve();
     }
+    return 0;
 }
+// // //  // // //  // // //  // // // // // //  // // // // // //  // // //

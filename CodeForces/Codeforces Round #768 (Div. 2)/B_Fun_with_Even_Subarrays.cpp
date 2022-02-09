@@ -55,7 +55,7 @@ void solve()
 // // //  // // //  // // //  // // // // // //  // // // // // //  // // //
 int32_t main()
 {
-    cin.tie(nullptr)->sync_with_stdio(false);
+    cin.tie(0)->sync_with_stdio(0);
     int t = 1;
     cin >> t;
     for (int i = 1; i <= t; i++)

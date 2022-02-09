@@ -62,6 +62,7 @@ void solve()
         {
             swap(A[2].ff, A[3].ff);
         }
+        
         for (int i = 0; i < m; i++)
             cout << A[i].ff << " " << A[i].ss << endl;
     }
